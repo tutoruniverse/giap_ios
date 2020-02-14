@@ -204,10 +204,11 @@ static GIAP *instance;
         self.flushing = YES;
         
         NSMutableArray *currentEventBatch = [NSMutableArray array];
+        NSMutableArray *queueCopyForFlushing = [self.taskQueue mutableCopy];
         
         while ([self shouldShiftEvent]) {
-            NSDictionary *task = [self.taskQueue objectAtIndex:0];
-            [self.taskQueue removeObjectAtIndex:0];
+            NSDictionary *task = [queueCopyForFlushing objectAtIndex:0];
+            [queueCopyForFlushing removeObjectAtIndex:0];
             NSMutableDictionary *taskData = [task valueForKey:@"data"];
             
             // Add event to the batch
@@ -222,16 +223,18 @@ static GIAP *instance;
             NSLog(@"%@Emitting events: %@", self, currentEventBatch);
             [self.network emitEvents:currentEventBatch completionHandler:^(NSError *error) {
                 if (error) {
-                    NSLog(@"%@Failed in emitting events: %@", self, [error localizedDescription]);
+                    NSLog(@"%@ Failed in emitting events: %@", self, [error localizedDescription]);
+                    self.flushing = NO;
                 } else {
-                    NSLog(@"%@Done emitting events", self);
+                    NSLog(@"%@ Done emitting events", self);
+                    [self.taskQueue removeObjectsInRange:NSMakeRange(0, [currentEventBatch count])];
+                    [self keepFlushing];
                 }
                 
-                [self keepFlushing];
             }];
-        } else if ([self.taskQueue count] > 0) {
-            NSDictionary *task = [self.taskQueue objectAtIndex:0];
-            [self.taskQueue removeObjectAtIndex:0];
+        } else if ([queueCopyForFlushing count] > 0) {
+            NSDictionary *task = [queueCopyForFlushing objectAtIndex:0];
+            [queueCopyForFlushing removeObjectAtIndex:0];
             NSString *taskType = [task valueForKey:@"type"];
             NSMutableDictionary *taskData = [task valueForKey:@"data"];
             
@@ -241,28 +244,49 @@ static GIAP *instance;
                 NSString *userId = [taskData valueForKey:@"user_id"];
                 NSString *distinctId = [taskData valueForKey:@"distinct_id"];
                 [self.network createAliasForUserId:userId withDistinctId:distinctId completionHandler:^(NSError *error) {
-                    [self keepFlushing];
+                    if (error) {
+                        NSLog(@"%@ Failed in creating alias %@: %@", self, userId, [error localizedDescription]);
+                        self.flushing = NO;
+                    } else {
+                        NSLog(@"%@ Done creating alias %@", self, userId);
+                        [self.taskQueue removeObjectAtIndex:0];
+                        [self keepFlushing];
+                    }
                 }];
             } else if ([taskType isEqualToString:@"identify"]) {
                 // Identify
                 NSString *userId = [taskData valueForKey:@"user_id"];
                 
                 [self.network identifyWithUserId:userId fromDistinctId:self.distinctId completionHandler:^(NSString *distinctId, NSError *error) {
-                    [self keepFlushing];
+                    if (error) {
+                        NSLog(@"%@ Failed in identifying %@: %@", self, userId, [error localizedDescription]);
+                        self.flushing = NO;
+                    } else {
+                        NSLog(@"%@ Done identifying %@", self, userId);
+                        [self.taskQueue removeObjectAtIndex:0];
+                        [self keepFlushing];
+                    }
                 }];
                 
                 self.distinctId = userId;
             } else if ([taskType isEqualToString:@"profile_updates"]) {
                 // Profile updates
                 [self.network updateProfileWithId:self.distinctId updateData:taskData completionHandler:^(NSError *error) {
-                    [self keepFlushing];
+                    if (error) {
+                        NSLog(@"%@ Failed in setting profile properties %@: %@", self, taskData, [error localizedDescription]);
+                        self.flushing = NO;
+                    } else {
+                        NSLog(@"%@ Done setting profile properties %@", self, taskData);
+                        [self.taskQueue removeObjectAtIndex:0];
+                        [self keepFlushing];
+                    }
                 }];
             } else if ([taskType isEqualToString:@"reset"]) {
                  // Reset
                 self.distinctId = [self.storage getDistinctId];
                 self.deviceId = [self getDeviceId];
                 
-                NSLog(@"%@reset. distinctId=%@ deviceId=%@", self, self.distinctId, self.deviceId);
+                NSLog(@"%@ Reset: distinctId=%@ deviceId=%@", self, self.distinctId, self.deviceId);
                 
                 [self keepFlushing];
             } else {
