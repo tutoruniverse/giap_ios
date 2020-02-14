@@ -188,7 +188,6 @@ static GIAP *instance;
 - (BOOL)shouldShiftEvent
 {
     if ([self.taskQueue count] > 0) {
-        NSLog(@"okokok");
         return [[[self.taskQueue objectAtIndex:0] valueForKey:@"type"] isEqualToString:@"event"];
     }
     
