@@ -1,0 +1,6 @@
+framework module GIAP {
+  umbrella header "GIAP-umbrella.h"
+
+  export *
+  module * { export * }
+}

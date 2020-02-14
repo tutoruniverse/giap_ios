@@ -10,4 +10,10 @@
 
 @interface GIAPViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIStackView *loginSignupStack;
+
+@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
+
+@property (atomic, copy) NSString *userId;
+
 @end
