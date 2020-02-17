@@ -19,6 +19,8 @@
 @interface GIAP()
 
 #pragma mark Properties
+
+@property (atomic, weak) id<GIAPDelegate> delegate;
 @property (atomic, copy) NSString *token;
 @property (atomic, copy) NSString *distinctId;
 @property (atomic, copy) NSString *deviceId;

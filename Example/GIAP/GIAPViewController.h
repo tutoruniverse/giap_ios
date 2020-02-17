@@ -7,8 +7,9 @@
 //
 
 @import UIKit;
+@import GIAP;
 
-@interface GIAPViewController : UIViewController
+@interface GIAPViewController: UIViewController <GIAPDelegate>
 
 @property (weak, nonatomic) IBOutlet UIStackView *loginSignupStack;
 

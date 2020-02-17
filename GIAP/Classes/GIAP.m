@@ -17,6 +17,7 @@ static GIAP *instance;
     return instance;
 }
 
+
 - (nullable instancetype) initWithToken:(NSString *)token serverUrl:(NSURL *)serverUrl
 {
     if (instance != nil) {
@@ -219,14 +220,14 @@ static GIAP *instance;
         }
         
         if ([currentEventBatch count] > 0) {
-            // Flush the event batch
-            NSLog(@"%@Emitting events: %@", self, currentEventBatch);
             [self.network emitEvents:currentEventBatch completionHandler:^(NSError *error) {
+                if (self.delegate) {
+                    [self.delegate giap:self didEmitEvents:currentEventBatch withError:error];
+                }
+                
                 if (error) {
-                    NSLog(@"%@ Failed in emitting events: %@", self, [error localizedDescription]);
                     self.flushing = NO;
                 } else {
-                    NSLog(@"%@ Done emitting events", self);
                     [self.taskQueue removeObjectsInRange:NSMakeRange(0, [currentEventBatch count])];
                     [self keepFlushing];
                 }
@@ -244,11 +245,13 @@ static GIAP *instance;
                 NSString *userId = [taskData valueForKey:@"user_id"];
                 NSString *distinctId = [taskData valueForKey:@"distinct_id"];
                 [self.network createAliasForUserId:userId withDistinctId:distinctId completionHandler:^(NSError *error) {
+                    if (self.delegate) {
+                        [self.delegate giap:self didCreateAliasForUserId:userId withDistinctId:distinctId withError:error];
+                    }
+                    
                     if (error) {
-                        NSLog(@"%@ Failed in creating alias %@: %@", self, userId, [error localizedDescription]);
                         self.flushing = NO;
                     } else {
-                        NSLog(@"%@ Done creating alias %@", self, userId);
                         [self.taskQueue removeObjectAtIndex:0];
                         [self keepFlushing];
                     }
@@ -258,11 +261,13 @@ static GIAP *instance;
                 NSString *userId = [taskData valueForKey:@"user_id"];
                 
                 [self.network identifyWithUserId:userId fromDistinctId:self.distinctId completionHandler:^(NSString *distinctId, NSError *error) {
+                    if (self.delegate) {
+                        [self.delegate giap:self didIdentifyUserId:userId withCurrentDistinctId:self.distinctId withError:error];
+                    }
+                    
                     if (error) {
-                        NSLog(@"%@ Failed in identifying %@: %@", self, userId, [error localizedDescription]);
                         self.flushing = NO;
                     } else {
-                        NSLog(@"%@ Done identifying %@", self, userId);
                         [self.taskQueue removeObjectAtIndex:0];
                         [self keepFlushing];
                     }
@@ -272,6 +277,10 @@ static GIAP *instance;
             } else if ([taskType isEqualToString:@"profile_updates"]) {
                 // Profile updates
                 [self.network updateProfileWithId:self.distinctId updateData:taskData completionHandler:^(NSError *error) {
+                    if (self.delegate) {
+                        [self.delegate giap:self didUpdateProfile:self.distinctId withProperties:taskData withError:error];
+                    }
+                    
                     if (error) {
                         NSLog(@"%@ Failed in setting profile properties %@: %@", self, taskData, [error localizedDescription]);
                         self.flushing = NO;
@@ -284,9 +293,10 @@ static GIAP *instance;
             } else if ([taskType isEqualToString:@"reset"]) {
                  // Reset
                 self.distinctId = [self.storage getDistinctId];
-                self.deviceId = [self getDeviceId];
-                
-                NSLog(@"%@ Reset: distinctId=%@ deviceId=%@", self, self.distinctId, self.deviceId);
+
+                if (self.delegate) {
+                    [self.delegate giap:self didResetWithDistinctId:self.distinctId];
+                }
                 
                 [self keepFlushing];
             } else {

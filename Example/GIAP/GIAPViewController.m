@@ -9,10 +9,6 @@
 #import "GIAPViewController.h"
 #import "GIAP/GIAP.h"
 
-@interface GIAPViewController ()
-
-@end
-
 @implementation GIAPViewController
 
 - (void)viewDidLoad
@@ -21,6 +17,8 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     [GIAP initWithToken:@"Token" serverUrl:[NSURL URLWithString:@"https://giap.got-it.ai"]];
+    [GIAP sharedInstance].delegate = self;
+    
     self.logoutButton.hidden = YES;
 }
 
@@ -84,6 +82,35 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)giap:(GIAP *)giap didResetWithDistinctId:(NSString *)distinctId
+{
+    
+}
+
+- (void)giap:(GIAP *)giap didEmitEvents:(NSArray *)events withError:(NSError *)error
+{
+    NSLog(@"GIAP didEmitEvent:\n%@", events);
+    NSLog(@"%@", error);
+}
+
+- (void)giap:(GIAP *)giap didUpdateProfile:(NSString *)distinctId withProperties:(NSDictionary *)properties withError:(NSError *)error
+{
+    NSLog(@"GIAP didUpdateProfile:\n%@ withProperties:%@", distinctId, properties);
+    NSLog(@"%@", error);
+}
+
+- (void)giap:(GIAP *)giap didCreateAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId withError:(NSError *)error
+{
+    NSLog(@"GIAP didCreateAliasForUserId:\n%@ withDistinctId:%@", userId, distinctId);
+    NSLog(@"%@", error);
+}
+
+- (void)giap:(GIAP *)giap didIdentifyUserId:(NSString *)userId withCurrentDistinctId:(NSString *)distinctId withError:(NSError *)error
+{
+    NSLog(@"GIAP didIdentifyUserId:\n%@ withCurrentDistinctId:%@", userId, distinctId);
+    NSLog(@"%@", error);
 }
 
 @end

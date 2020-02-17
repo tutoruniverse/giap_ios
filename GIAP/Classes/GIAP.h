@@ -21,9 +21,9 @@
 
 #pragma mark Methods
 
-+ (nullable instancetype) initWithToken:(NSString * _Nonnull)token serverUrl:(NSURL * _Nonnull)serverUrl;
++ (nullable instancetype)initWithToken:(NSString * _Nonnull)token serverUrl:(NSURL * _Nonnull)serverUrl;
 
-+ (nullable instancetype) sharedInstance;
++ (nullable instancetype)sharedInstance;
 
 - (void)track:(nonnull NSString *)eventName properties:(nullable NSDictionary*) properties;
 
@@ -34,5 +34,17 @@
 - (void)setProfileProperties:(nonnull NSDictionary *)properties;
 
 - (void)reset;
+
+@end
+
+@protocol GIAPDelegate <NSObject>
+
+@optional
+
+- (void)giap:(nonnull GIAP *)giap didEmitEvents:(nonnull NSArray *)events withError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didCreateAliasForUserId:(nonnull NSString *)userId withDistinctId:(nonnull NSString *)distinctId withError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didIdentifyUserId:(nonnull NSString *)userId withCurrentDistinctId:(nonnull NSString *)distinctId withError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didUpdateProfile:(nonnull NSString *)distinctId withProperties:(nonnull NSDictionary *)properties withError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didResetWithDistinctId:(nonnull NSString *)distinctId;
 
 @end
