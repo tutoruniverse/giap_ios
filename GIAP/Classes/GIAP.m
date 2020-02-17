@@ -186,10 +186,10 @@ static GIAP *instance;
     }
 }
 
-- (BOOL)shouldShiftEvent
+- (BOOL)shouldShiftEventFromQueue:(NSArray *)queue
 {
-    if ([self.taskQueue count] > 0) {
-        return [[[self.taskQueue objectAtIndex:0] valueForKey:@"type"] isEqualToString:@"event"];
+    if ([queue count] > 0) {
+        return [[[queue objectAtIndex:0] valueForKey:@"type"] isEqualToString:@"event"];
     }
     
     return false;
@@ -207,7 +207,7 @@ static GIAP *instance;
         NSMutableArray *currentEventBatch = [NSMutableArray array];
         NSMutableArray *queueCopyForFlushing = [self.taskQueue mutableCopy];
         
-        while ([self shouldShiftEvent]) {
+        while ([self shouldShiftEventFromQueue:queueCopyForFlushing]) {
             NSDictionary *task = [queueCopyForFlushing objectAtIndex:0];
             [queueCopyForFlushing removeObjectAtIndex:0];
             NSMutableDictionary *taskData = [task valueForKey:@"data"];

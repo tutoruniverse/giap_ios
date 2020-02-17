@@ -19,30 +19,54 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IMJ-yg-aAk">
-                                <rect key="frame" x="163.5" y="597" width="48" height="30"/>
-                                <state key="normal" title="Logout">
-                                    <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="didClickLogout:" destination="whP-gf-Uak" eventType="touchUpInside" id="FhJ-vX-8jQ"/>
-                                </connections>
-                            </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="9ke-sz-xG5">
-                                <rect key="frame" x="32" y="597" width="311" height="30"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Bee-Fh-ZgM">
+                                <rect key="frame" x="159" y="272.5" width="57" height="122"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7yO-d6-V73">
-                                        <rect key="frame" x="0.0" y="0.0" width="137.5" height="30"/>
-                                        <state key="normal" title="Login"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hhe-DY-PMA">
+                                        <rect key="frame" x="0.0" y="0.0" width="57" height="30"/>
+                                        <state key="normal" title="Visit"/>
                                         <connections>
-                                            <action selector="didClickLogin:" destination="whP-gf-Uak" eventType="touchUpInside" id="j59-ql-lSv"/>
+                                            <action selector="didClickVisit:" destination="whP-gf-Uak" eventType="touchUpInside" id="Cch-hc-8ar"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Fo-fe-m83">
-                                        <rect key="frame" x="137.5" y="0.0" width="173.5" height="30"/>
-                                        <state key="normal" title="Signup"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fgR-2N-Nzi">
+                                        <rect key="frame" x="0.0" y="46" width="57" height="30"/>
+                                        <state key="normal" title="Login"/>
                                         <connections>
-                                            <action selector="didClickSignUp:" destination="whP-gf-Uak" eventType="touchUpInside" id="Vdq-J9-hIb"/>
+                                            <action selector="didClickLogin:" destination="whP-gf-Uak" eventType="touchUpInside" id="FNW-Gq-4YG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fic-bd-x8m">
+                                        <rect key="frame" x="0.0" y="92" width="57" height="30"/>
+                                        <state key="normal" title="Sign-Up"/>
+                                        <connections>
+                                            <action selector="didClickSignUp:" destination="whP-gf-Uak" eventType="touchUpInside" id="CEG-l0-iu2"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dB5-mr-50V">
+                                <rect key="frame" x="140" y="272.5" width="95" height="122"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="We5-OJ-pac">
+                                        <rect key="frame" x="0.0" y="0.0" width="95" height="30"/>
+                                        <state key="normal" title="Ask"/>
+                                        <connections>
+                                            <action selector="didClickAsk:" destination="whP-gf-Uak" eventType="touchUpInside" id="p6w-D0-CdO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DBL-Jq-rFi">
+                                        <rect key="frame" x="0.0" y="46" width="95" height="30"/>
+                                        <state key="normal" title="Logout"/>
+                                        <connections>
+                                            <action selector="didClickLogout:" destination="whP-gf-Uak" eventType="touchUpInside" id="WMS-ic-5d3"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="198-LZ-rc5">
+                                        <rect key="frame" x="0.0" y="92" width="95" height="30"/>
+                                        <state key="normal" title="Set Full Name"/>
+                                        <connections>
+                                            <action selector="didClickSetFullName:" destination="whP-gf-Uak" eventType="touchUpInside" id="lQT-rb-2Zy"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -50,22 +74,20 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Mvr-aV-6Um" firstAttribute="top" secondItem="9ke-sz-xG5" secondAttribute="bottom" constant="40" id="0RA-sD-IiO"/>
-                            <constraint firstItem="IMJ-yg-aAk" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="5Ga-PE-Vbw"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="9ke-sz-xG5" secondAttribute="trailing" constant="16" id="AaD-I4-kc0"/>
-                            <constraint firstItem="9ke-sz-xG5" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leadingMargin" constant="16" id="Ox5-Ye-mMh"/>
-                            <constraint firstAttribute="bottom" secondItem="IMJ-yg-aAk" secondAttribute="bottom" constant="40" id="c9W-yt-hga"/>
-                            <constraint firstItem="9ke-sz-xG5" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="exL-Sr-ing"/>
+                            <constraint firstItem="dB5-mr-50V" firstAttribute="centerY" secondItem="TpU-gO-2f1" secondAttribute="centerY" id="3WV-F8-MAn"/>
+                            <constraint firstItem="Bee-Fh-ZgM" firstAttribute="centerY" secondItem="TpU-gO-2f1" secondAttribute="centerY" id="6HO-7k-JNU"/>
+                            <constraint firstItem="Bee-Fh-ZgM" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="8Z1-0z-S1U"/>
+                            <constraint firstItem="dB5-mr-50V" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="dAd-Ch-zU0"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="loginSignupStack" destination="9ke-sz-xG5" id="Niv-ol-mab"/>
-                        <outlet property="logoutButton" destination="IMJ-yg-aAk" id="IxW-Vx-2ce"/>
+                        <outlet property="loggedInStack" destination="dB5-mr-50V" id="DAo-fz-0SZ"/>
+                        <outlet property="notLoggedInStack" destination="Bee-Fh-ZgM" id="ae2-dY-lrw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305" y="433"/>
+            <point key="canvasLocation" x="304.80000000000001" y="432.23388305847078"/>
         </scene>
     </scenes>
 </document>
