@@ -101,12 +101,6 @@
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
-    
-    NSException *e = [NSException
-                       exceptionWithName:@"DuplcatedInitialization"
-                       reason:@"GIAP can be initialized only once"
-                       userInfo:nil];
-     @throw e;
 }
 
 - (IBAction)didClickAsk:(id)sender {
