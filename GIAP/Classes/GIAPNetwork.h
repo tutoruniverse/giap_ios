@@ -14,9 +14,9 @@
 @interface GIAPNetwork : NSObject
 
 + (instancetype)initWithToken:(NSString *) token serverUrl:(NSURL *)serverURL;
-- (void) emitEvents:(NSArray *)events completionHandler:(void (^)(NSError*))completionHandler;
-- (void) updateProfileWithId:(NSString *)profileId updateData:(NSDictionary *)updateData completionHandler:(void (^)(NSError*))completionHandler;
-- (void) createAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId completionHandler:(void (^)(NSError*))completionHandler;
-- (void) identifyWithUserId:(NSString *)userId fromDistinctId:(NSString *) distinctId completionHandler:(void (^)(NSString* , NSError*))completionHandler;
+- (void) emitEvents:(NSArray *)events completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
+- (void) updateProfileWithId:(NSString *)profileId updateData:(NSDictionary *)updateData completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
+- (void) createAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
+- (void) identifyWithUserId:(NSString *)userId fromDistinctId:(NSString *) distinctId completionHandler:(void (^)(NSDictionary* , NSError*))completionHandler;
 
 @end

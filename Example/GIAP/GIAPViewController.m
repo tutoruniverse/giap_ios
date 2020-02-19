@@ -16,7 +16,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [GIAP initWithToken:@"Token" serverUrl:[NSURL URLWithString:@"https://giap.got-it.ai"]];
+    [GIAP initWithToken:@"thang" serverUrl:[NSURL URLWithString:@"http://localhost:8080"]];
     [GIAP sharedInstance].delegate = self;
     
     [self changeState:NO];
@@ -101,6 +101,12 @@
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
+    
+    NSException *e = [NSException
+                       exceptionWithName:@"DuplcatedInitialization"
+                       reason:@"GIAP can be initialized only once"
+                       userInfo:nil];
+     @throw e;
 }
 
 - (IBAction)didClickAsk:(id)sender {
@@ -121,7 +127,7 @@
         UITextField * userIdTextField = textfields[0];
         NSString *text = userIdTextField.text;
         
-        [[GIAP sharedInstance] track:@"Visit" properties:@{
+        [[GIAP sharedInstance] track:@"Ask" properties:@{
             @"problem_text": text
         }];
     }]];
@@ -178,28 +184,44 @@
     
 }
 
-- (void)giap:(GIAP *)giap didEmitEvents:(NSArray *)events withError:(NSError *)error
+- (void)giap:(GIAP *)giap didEmitEvents:(NSArray *)events withResponse:(NSDictionary *)response andError:(NSError *)error
 {
     NSLog(@"GIAP didEmitEvent:\n%@", events);
-    NSLog(@"%@", error);
+    if (error) {
+        NSLog(@"%@", error);
+    } else {
+        NSLog(@"%@", response);
+    }
 }
 
-- (void)giap:(GIAP *)giap didUpdateProfile:(NSString *)distinctId withProperties:(NSDictionary *)properties withError:(NSError *)error
+- (void)giap:(GIAP *)giap didUpdateProfile:(NSString *)distinctId withProperties:(NSDictionary *)properties withResponse:(NSDictionary *)response andError:(NSError *)error
 {
     NSLog(@"GIAP didUpdateProfile:\n%@ withProperties:%@", distinctId, properties);
-    NSLog(@"%@", error);
+    if (error) {
+        NSLog(@"%@", error);
+    } else {
+        NSLog(@"%@", response);
+    }
 }
 
-- (void)giap:(GIAP *)giap didCreateAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId withError:(NSError *)error
+- (void)giap:(GIAP *)giap didCreateAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId withResponse:(NSDictionary *)response andError:(NSError *)error
 {
     NSLog(@"GIAP didCreateAliasForUserId:\n%@ withDistinctId:%@", userId, distinctId);
-    NSLog(@"%@", error);
+    if (error) {
+        NSLog(@"%@", error);
+    } else {
+        NSLog(@"%@", response);
+    }
 }
 
-- (void)giap:(GIAP *)giap didIdentifyUserId:(NSString *)userId withCurrentDistinctId:(NSString *)distinctId withError:(NSError *)error
+- (void)giap:(GIAP *)giap didIdentifyUserId:(NSString *)userId withCurrentDistinctId:(NSString *)distinctId withResponse:(NSDictionary *)response andError:(NSError *)error
 {
     NSLog(@"GIAP didIdentifyUserId:\n%@ withCurrentDistinctId:%@", userId, distinctId);
-    NSLog(@"%@", error);
+    if (error) {
+        NSLog(@"%@", error);
+    } else {
+        NSLog(@"%@", response);
+    }
 }
 
 @end

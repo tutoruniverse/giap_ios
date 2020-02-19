@@ -41,10 +41,10 @@
 
 @optional
 
-- (void)giap:(nonnull GIAP *)giap didEmitEvents:(nonnull NSArray *)events withError:(nullable NSError *)error;
-- (void)giap:(nonnull GIAP *)giap didCreateAliasForUserId:(nonnull NSString *)userId withDistinctId:(nonnull NSString *)distinctId withError:(nullable NSError *)error;
-- (void)giap:(nonnull GIAP *)giap didIdentifyUserId:(nonnull NSString *)userId withCurrentDistinctId:(nonnull NSString *)distinctId withError:(nullable NSError *)error;
-- (void)giap:(nonnull GIAP *)giap didUpdateProfile:(nonnull NSString *)distinctId withProperties:(nonnull NSDictionary *)properties withError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didEmitEvents:(nonnull NSArray *)events withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didCreateAliasForUserId:(nonnull NSString *)userId withDistinctId:(nonnull NSString *)distinctId withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didIdentifyUserId:(nonnull NSString *)userId withCurrentDistinctId:(nonnull NSString *)distinctId withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didUpdateProfile:(nonnull NSString *)distinctId withProperties:(nonnull NSDictionary *)properties withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
 - (void)giap:(nonnull GIAP *)giap didResetWithDistinctId:(nonnull NSString *)distinctId;
-
+- (void)handleException:(NSException *)exception;
 @end

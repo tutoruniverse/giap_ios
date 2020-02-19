@@ -6,6 +6,11 @@
 
 @implementation GIAP
 
+void myExceptionHandler(NSException *exception)
+{
+    [[GIAP sharedInstance] handleException:exception];
+}
+
 static GIAP *instance;
 
 + (nullable instancetype) initWithToken:(NSString *)token serverUrl:(NSURL *)serverUrl
@@ -27,6 +32,8 @@ static GIAP *instance;
                           userInfo:nil];
         @throw e;
     }
+    
+    NSSetUncaughtExceptionHandler(&myExceptionHandler);
     
     // Utilities
     self.network = [GIAPNetwork initWithToken:token serverUrl:serverUrl];
@@ -141,13 +148,18 @@ static GIAP *instance;
     [self flushQueue];
 }
 
+- (void)handleException:(NSException *)exception
+{
+    [self.storage saveTaskQueue:self.taskQueue];
+}
+
 - (void)addToQueue:(NSDictionary *)data
 {
     NSTimeInterval epochInterval = [[NSDate date] timeIntervalSince1970];
-    NSNumber *epochSeconds = @(round(epochInterval));
+    NSNumber *epochMiliseconds = @(round(epochInterval * 1000));
     
     NSMutableDictionary *taskdata = [data mutableCopy];
-    [taskdata setValue:epochSeconds forKey:@"time"];
+    [taskdata setValue:epochMiliseconds forKey:@"time"];
     [self.taskQueue addObject:taskdata];
     
     NSLog(@"%@ Add to queue: %@", self, taskdata);
@@ -219,19 +231,23 @@ static GIAP *instance;
             [currentEventBatch addObject:taskData];
         }
         
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        __block BOOL shouldContinue = NO;
+        
         if ([currentEventBatch count] > 0) {
-            [self.network emitEvents:currentEventBatch completionHandler:^(NSError *error) {
+            [self.network emitEvents:currentEventBatch completionHandler:^(NSDictionary *response, NSError *error) {
                 if (self.delegate) {
-                    [self.delegate giap:self didEmitEvents:currentEventBatch withError:error];
+                    [self.delegate giap:self didEmitEvents:currentEventBatch withResponse:response andError:error];
                 }
                 
                 if (error) {
-                    self.flushing = NO;
+                    shouldContinue = NO;
                 } else {
                     [self.taskQueue removeObjectsInRange:NSMakeRange(0, [currentEventBatch count])];
-                    [self keepFlushing];
+                    shouldContinue = YES;
                 }
                 
+                dispatch_semaphore_signal(semaphore);
             }];
         } else if ([queueCopyForFlushing count] > 0) {
             NSDictionary *task = [queueCopyForFlushing objectAtIndex:0];
@@ -239,69 +255,90 @@ static GIAP *instance;
             NSString *taskType = [task valueForKey:@"type"];
             NSMutableDictionary *taskData = [task valueForKey:@"data"];
             
-         
+            
             if ([taskType isEqualToString:@"alias"]) {
                 // Alias
                 NSString *userId = [taskData valueForKey:@"user_id"];
-                NSString *distinctId = [taskData valueForKey:@"distinct_id"];
-                [self.network createAliasForUserId:userId withDistinctId:distinctId completionHandler:^(NSError *error) {
+               
+                
+                [self.network createAliasForUserId:userId withDistinctId:self.distinctId completionHandler:^(NSDictionary *response, NSError *error) {
                     if (self.delegate) {
-                        [self.delegate giap:self didCreateAliasForUserId:userId withDistinctId:distinctId withError:error];
+                        [self.delegate giap:self didCreateAliasForUserId:userId withDistinctId:self.distinctId withResponse:response andError:error];
                     }
                     
                     if (error) {
-                        self.flushing = NO;
+                        shouldContinue = NO;
                     } else {
                         [self.taskQueue removeObjectAtIndex:0];
-                        [self keepFlushing];
+                        shouldContinue = YES;
                     }
+                    
+                    dispatch_semaphore_signal(semaphore);
                 }];
+                
             } else if ([taskType isEqualToString:@"identify"]) {
                 // Identify
                 NSString *userId = [taskData valueForKey:@"user_id"];
                 
-                [self.network identifyWithUserId:userId fromDistinctId:self.distinctId completionHandler:^(NSString *distinctId, NSError *error) {
+                [self.network identifyWithUserId:userId fromDistinctId:self.distinctId completionHandler:^(NSDictionary *response, NSError *error) {
                     if (self.delegate) {
-                        [self.delegate giap:self didIdentifyUserId:userId withCurrentDistinctId:self.distinctId withError:error];
+                        [self.delegate giap:self didIdentifyUserId:userId withCurrentDistinctId:self.distinctId withResponse:response andError:error];
                     }
                     
                     if (error) {
-                        self.flushing = NO;
+                       shouldContinue = NO;
                     } else {
+                        if ([response valueForKey:@"distinct_id"]) {
+                            self.distinctId = userId;
+                        }
                         [self.taskQueue removeObjectAtIndex:0];
-                        [self keepFlushing];
+                        shouldContinue = YES;
                     }
+                    
+                    dispatch_semaphore_signal(semaphore);
                 }];
                 
-                self.distinctId = userId;
+                
             } else if ([taskType isEqualToString:@"profile_updates"]) {
                 // Profile updates
-                [self.network updateProfileWithId:self.distinctId updateData:taskData completionHandler:^(NSError *error) {
+                [self.network updateProfileWithId:self.distinctId updateData:taskData completionHandler:^(NSDictionary *response, NSError *error) {
                     if (self.delegate) {
-                        [self.delegate giap:self didUpdateProfile:self.distinctId withProperties:taskData withError:error];
+                        [self.delegate giap:self didUpdateProfile:self.distinctId withProperties:taskData withResponse:response andError:error];
                     }
                     
                     if (error) {
-                        NSLog(@"%@ Failed in setting profile properties %@: %@", self, taskData, [error localizedDescription]);
-                        self.flushing = NO;
+                        shouldContinue = NO;
                     } else {
-                        NSLog(@"%@ Done setting profile properties %@", self, taskData);
                         [self.taskQueue removeObjectAtIndex:0];
-                        [self keepFlushing];
+                        shouldContinue = YES;
                     }
+                    
+                    dispatch_semaphore_signal(semaphore);
                 }];
             } else if ([taskType isEqualToString:@"reset"]) {
-                 // Reset
+                // Reset
                 self.distinctId = [self.storage getDistinctId];
-
+                
                 if (self.delegate) {
                     [self.delegate giap:self didResetWithDistinctId:self.distinctId];
                 }
                 
-                [self keepFlushing];
+                [self.taskQueue removeObjectAtIndex:0];
+                shouldContinue = YES;
+                dispatch_semaphore_signal(semaphore);
             } else {
-                self.flushing = NO;
+                shouldContinue = NO;
+                dispatch_semaphore_signal(semaphore);
             }
+        } else {
+            shouldContinue = NO;
+            dispatch_semaphore_signal(semaphore);
+        }
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        if (shouldContinue) {
+            [self keepFlushing];
         } else {
             self.flushing = NO;
         }
