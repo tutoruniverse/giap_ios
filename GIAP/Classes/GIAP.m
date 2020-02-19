@@ -111,7 +111,7 @@ static GIAP *instance;
     
     [p addEntriesFromDictionary:[self.device getDeviceProperties]];
     [p addEntriesFromDictionary:@{
-        @"$": eventName,
+        @"$name": eventName,
         @"$device_id": self.deviceId
     }];
     
@@ -317,7 +317,7 @@ static GIAP *instance;
                 }];
             } else if ([taskType isEqualToString:@"reset"]) {
                 // Reset
-                self.distinctId = [self.storage getDistinctId];
+                self.distinctId = [self.storage resetDistinctId];
                 
                 if (self.delegate) {
                     [self.delegate giap:self didResetWithDistinctId:self.distinctId];

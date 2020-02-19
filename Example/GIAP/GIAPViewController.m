@@ -16,7 +16,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [GIAP initWithToken:@"thang" serverUrl:[NSURL URLWithString:@"http://localhost:8080"]];
+    [GIAP initWithToken:@"thang" serverUrl:[NSURL URLWithString:@"http://13.250.58.88"]];
     [GIAP sharedInstance].delegate = self;
     
     [self changeState:NO];
@@ -175,7 +175,7 @@
 
 - (void)giap:(GIAP *)giap didResetWithDistinctId:(NSString *)distinctId
 {
-    
+    NSLog(@"GIAP didResetWithDistinctId:%@", distinctId);
 }
 
 - (void)giap:(GIAP *)giap didEmitEvents:(NSArray *)events withResponse:(NSDictionary *)response andError:(NSError *)error
