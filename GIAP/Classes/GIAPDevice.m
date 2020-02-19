@@ -71,9 +71,9 @@
     
     [p addEntriesFromDictionary:self.consistentProperties];
     
-    [p setValue:self.radio forKey:@"_radio"];
-    [p setValue:self.carrier forKey:@"_carrier"];
-    [p setValue:@(self.wifi) forKey:@"_wifi"];
+    [p setValue:self.radio forKey:@"$radio"];
+    [p setValue:self.carrier forKey:@"$carrier"];
+    [p setValue:@(self.wifi) forKey:@"$wifi"];
     
     return p;
 }
@@ -108,25 +108,25 @@
     NSMutableDictionary *p = [NSMutableDictionary dictionary];
     
     // Use setValue semantics to avoid adding keys where value can be nil.
-    [p setValue:[[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"] forKey:@"_app_build_number"];
-    [p setValue:[[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"] forKey:@"_app_version_string"];
+    [p setValue:[[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"] forKey:@"$app_build_number"];
+    [p setValue:[[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"] forKey:@"$app_version_string"];
     
     CTCarrier *carrier = [self.telephonyInfo subscriberCellularProvider];
-    [p setValue:carrier.carrierName forKey:@"_carrier"];
+    [p setValue:carrier.carrierName forKey:@"$carrier"];
     
     id deviceModel = [self deviceModel] ? : [NSNull null];
     CGSize size = [UIScreen mainScreen].bounds.size;
     UIDevice *device = [UIDevice currentDevice];
     
     [p addEntriesFromDictionary:@{
-        @"_lib": @"GIAP-iOS",
-        @"_lib_version": VERSION,
-        @"_manufacturer": @"Apple",
-        @"_model": deviceModel,
-        @"_os":  [device systemName],
-        @"_os_version": [device systemVersion],
-        @"_screen_height": @((NSInteger)size.height),
-        @"_screen_width": @((NSInteger)size.width)
+        @"$lib": @"GIAP-iOS",
+        @"$lib_version": VERSION,
+        @"$manufacturer": @"Apple",
+        @"$model": deviceModel,
+        @"$os":  [device systemName],
+        @"$os_version": [device systemVersion],
+        @"$screen_height": @((NSInteger)size.height),
+        @"$screen_width": @((NSInteger)size.width)
     }];
     
     return p;

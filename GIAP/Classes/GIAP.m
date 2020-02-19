@@ -111,8 +111,8 @@ static GIAP *instance;
     
     [p addEntriesFromDictionary:[self.device getDeviceProperties]];
     [p addEntriesFromDictionary:@{
-        @"_name": eventName,
-        @"_device_id": self.deviceId
+        @"$": eventName,
+        @"$device_id": self.deviceId
     }];
     
     if (properties) {
@@ -226,8 +226,8 @@ static GIAP *instance;
             
             // Add event to the batch
             NSNumber *time = [task valueForKey:@"time"];
-            [taskData setValue:time forKey:@"_time"];
-            [taskData setValue:self.distinctId forKey:@"_distinct_id"];
+            [taskData setValue:time forKey:@"$time"];
+            [taskData setValue:self.distinctId forKey:@"$distinct_id"];
             [currentEventBatch addObject:taskData];
         }
         
