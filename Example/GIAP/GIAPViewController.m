@@ -59,11 +59,26 @@
         textField.borderStyle = UITextBorderStyleRoundedRect;
     }];
     
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Email";
+        textField.textColor = [UIColor blueColor];
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+    }];
+    
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        NSArray * textfields = alertController.textFields;
-        UITextField * userIdTextField = textfields[0];
+        NSArray *textfields = alertController.textFields;
+        UITextField *userIdTextField = textfields[0];
+        UITextField *emailTextField = textfields[1];
         self.userId = userIdTextField.text;
-        [[GIAP sharedInstance] alias:self.userId];
+        GIAP *giap = [GIAP sharedInstance];
+        [giap track:@"Sign Up" properties:@{
+            @"email": emailTextField.text
+        }];
+        [giap alias:self.userId];
+        [giap setProfileProperties:@{
+            @"email": emailTextField.text
+        }];
         
         [self changeState:YES];
     }]];
