@@ -82,6 +82,14 @@ static GIAP *instance;
 
 - (void)alias:(NSString *)userId
 {
+    if (!userId || [userId isEqualToString:@""]) {
+       NSException *e = [NSException
+                         exceptionWithName:@"InvalidArgument"
+                         reason:@"userId can not be nil or empty"
+                         userInfo:nil];
+       @throw e;
+    }
+    
     [self addToQueue:@{
         @"type": @"alias",
         @"data": @{
@@ -95,6 +103,14 @@ static GIAP *instance;
 
 - (void)identify:(NSString *)userId
 {
+    if (!userId || [userId isEqualToString:@""]) {
+       NSException *e = [NSException
+                         exceptionWithName:@"InvalidArgument"
+                         reason:@"userId can not be nil or empty"
+                         userInfo:nil];
+       @throw e;
+    }
+    
     [self addToQueue:@{
         @"type": @"identify",
         @"data": @{
@@ -107,6 +123,15 @@ static GIAP *instance;
 
 - (void)track:(NSString *)eventName properties:(NSDictionary *)properties
 {
+    if (!eventName) {
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"eventName can not be nil"
+                          userInfo:nil];
+        @throw e;
+    }
+    
+    
     NSMutableDictionary *p = [NSMutableDictionary dictionary];
     
     [p addEntriesFromDictionary:[self.device getDeviceProperties]];
@@ -127,6 +152,14 @@ static GIAP *instance;
 
 - (void)setProfileProperties:(NSDictionary *)properties;
 {
+    if (!properties) {
+       NSException *e = [NSException
+                         exceptionWithName:@"InvalidArgument"
+                         reason:@"properties can not be nil"
+                         userInfo:nil];
+       @throw e;
+    }
+    
     [self addToQueue:@{
         @"type": @"profile_updates",
         @"data": properties

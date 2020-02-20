@@ -15,6 +15,4 @@
 
 @property (weak, nonatomic) IBOutlet UIStackView *loggedInStack;
 
-@property (atomic, copy) NSString *userId;
-
 @end

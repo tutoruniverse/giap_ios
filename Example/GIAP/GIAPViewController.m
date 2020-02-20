@@ -38,10 +38,12 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSArray * textfields = alertController.textFields;
         UITextField * userIdTextField = textfields[0];
-        self.userId = userIdTextField.text;
-        [[GIAP sharedInstance] identify:self.userId];
+        NSString *userId = userIdTextField.text;
         
-        [self changeState:YES];
+        if (userId && ![userId isEqualToString:@""]) {
+            [[GIAP sharedInstance] identify:userId];
+            [self changeState:YES];
+        }
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
@@ -70,17 +72,21 @@
         NSArray *textfields = alertController.textFields;
         UITextField *userIdTextField = textfields[0];
         UITextField *emailTextField = textfields[1];
-        self.userId = userIdTextField.text;
-        GIAP *giap = [GIAP sharedInstance];
-        [giap track:@"Sign Up" properties:@{
-            @"email": emailTextField.text
-        }];
-        [giap alias:self.userId];
-        [giap setProfileProperties:@{
-            @"email": emailTextField.text
-        }];
+        NSString *userId = userIdTextField.text;
+        NSString *email = emailTextField.text;
         
-        [self changeState:YES];
+        if (userId && ![userId isEqualToString:@""] && email && ![email isEqualToString:@""]) {
+            GIAP *giap = [GIAP sharedInstance];
+            [giap track:@"Sign Up" properties:@{
+                @"email": email
+            }];
+            [giap alias:userId];
+            [giap setProfileProperties:@{
+                @"email": email
+            }];
+            
+            [self changeState:YES];
+        }
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
@@ -110,9 +116,11 @@
         UITextField * userIdTextField = textfields[0];
         NSNumber *economyGroup = [[[NSNumberFormatter alloc] init] numberFromString:userIdTextField.text];
         
-        [[GIAP sharedInstance] track:@"Visit" properties:@{
-            @"economy_group": economyGroup
-        }];
+        if (economyGroup) {
+            [[GIAP sharedInstance] track:@"Visit" properties:@{
+                @"economy_group": economyGroup
+            }];
+        }
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
@@ -136,9 +144,11 @@
         UITextField * userIdTextField = textfields[0];
         NSString *text = userIdTextField.text;
         
-        [[GIAP sharedInstance] track:@"Ask" properties:@{
-            @"problem_text": text
-        }];
+        if (text) {
+            [[GIAP sharedInstance] track:@"Ask" properties:@{
+                @"problem_text": text
+            }];
+        }
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
@@ -162,9 +172,11 @@
         UITextField * userIdTextField = textfields[0];
         NSString *name = userIdTextField.text;
         
-        [[GIAP sharedInstance] setProfileProperties:@{
-            @"full_name": name
-        }];
+        if (name) {
+            [[GIAP sharedInstance] setProfileProperties:@{
+                @"full_name": name
+            }];
+        }
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
