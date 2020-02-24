@@ -16,7 +16,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [GIAP initWithToken:@"thang" serverUrl:[NSURL URLWithString:@"http://13.250.58.88"]];
+    [GIAP initWithToken:@"demo" serverUrl:[NSURL URLWithString:@"https://analytics-api.got-it.io"]];
     [GIAP sharedInstance].delegate = self;
     
     [self changeState:NO];

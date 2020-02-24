@@ -24,6 +24,7 @@
 		691A5F20BC4C01CBD1920738 /* Pods_GIAP_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB6545CA9B10B94133E3F9B /* Pods_GIAP_Example.framework */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		ED3463BE24038A8A00942ABD /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED3463BD24038A8A00942ABD /* ExternalAccessory.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +41,7 @@
 		0003528CF60B36AA425A8A0D /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		0D2FCE8E2A1756236B22EDC0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		1B13D9DB03D1EBEB8902BF1B /* Pods-GIAP_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GIAP_Example.release.xcconfig"; path = "Target Support Files/Pods-GIAP_Example/Pods-GIAP_Example.release.xcconfig"; sourceTree = "<group>"; };
-		6003F58A195388D20070C39A /* GIAP_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GIAP_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6003F58A195388D20070C39A /* GIAPDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GIAPDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -64,9 +65,11 @@
 		7572F14F619A8EDA5C498D9C /* Pods-GIAP_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GIAP_Tests.release.xcconfig"; path = "Target Support Files/Pods-GIAP_Tests/Pods-GIAP_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		88A2ED9B6DABD4DEF30AE542 /* Pods-GIAP_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GIAP_Example.debug.xcconfig"; path = "Target Support Files/Pods-GIAP_Example/Pods-GIAP_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		B315A5CC9B532213AB0EB363 /* GIAP.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = GIAP.podspec; path = ../GIAP.podspec; sourceTree = "<group>"; };
+		B315A5CC9B532213AB0EB363 /* GIAP.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = GIAP.podspec; path = ../GIAP.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C42E2F42CFDD9E97FD31B108 /* Pods_GIAP_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GIAP_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D48D3153CF18B2636C7D1E8C /* Pods-GIAP_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GIAP_Tests.debug.xcconfig"; path = "Target Support Files/Pods-GIAP_Tests/Pods-GIAP_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		ED3463BC24038A3800942ABD /* GIAPDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GIAPDemo.entitlements; sourceTree = "<group>"; };
+		ED3463BD24038A8A00942ABD /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +78,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
+				ED3463BE24038A8A00942ABD /* ExternalAccessory.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
 				691A5F20BC4C01CBD1920738 /* Pods_GIAP_Example.framework in Frameworks */,
@@ -109,6 +113,7 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				ED3463BC24038A3800942ABD /* GIAPDemo.entitlements */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Example for GIAP */,
 				6003F5B5195388D20070C39A /* Tests */,
@@ -121,7 +126,7 @@
 		6003F58B195388D20070C39A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6003F58A195388D20070C39A /* GIAP_Example.app */,
+				6003F58A195388D20070C39A /* GIAPDemo.app */,
 				6003F5AE195388D20070C39A /* GIAP_Tests.xctest */,
 			);
 			name = Products;
@@ -130,6 +135,7 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ED3463BD24038A8A00942ABD /* ExternalAccessory.framework */,
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
@@ -215,7 +221,7 @@
 			);
 			name = GIAP_Example;
 			productName = GIAP;
-			productReference = 6003F58A195388D20070C39A /* GIAP_Example.app */;
+			productReference = 6003F58A195388D20070C39A /* GIAPDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6003F5AD195388D20070C39A /* GIAP_Tests */ = {
@@ -248,7 +254,7 @@
 				ORGANIZATIONNAME = uendno;
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						DevelopmentTeam = S8Q2VYLKGV;
+						DevelopmentTeam = DS26Q5H5RS;
 					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
@@ -522,13 +528,17 @@
 			baseConfigurationReference = 88A2ED9B6DABD4DEF30AE542 /* Pods-GIAP_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = S8Q2VYLKGV;
+				CODE_SIGN_ENTITLEMENTS = GIAPDemo.entitlements;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = DS26Q5H5RS;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GIAP/GIAP-Prefix.pch";
 				INFOPLIST_FILE = "GIAP/GIAP-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MARKETING_VERSION = 1.0.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "ai.gotit.giap.giap-demo";
+				PRODUCT_NAME = GIAPDemo;
 				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
 			};
@@ -539,13 +549,17 @@
 			baseConfigurationReference = 1B13D9DB03D1EBEB8902BF1B /* Pods-GIAP_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GIAPDemo.entitlements;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = DS26Q5H5RS;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GIAP/GIAP-Prefix.pch";
 				INFOPLIST_FILE = "GIAP/GIAP-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MARKETING_VERSION = 1.0.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "ai.gotit.giap.giap-demo";
+				PRODUCT_NAME = GIAPDemo;
 				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
 			};
