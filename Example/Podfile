@@ -4,10 +4,11 @@ platform :ios, '8.0'
 
 target 'GIAP_Example' do
   pod 'GIAP', :path => '../'
-
+  
   target 'GIAP_Tests' do
     inherit! :search_paths
-
     
+    pod 'OCMock'
+    pod 'OHHTTPStubs'
   end
 end

@@ -20,11 +20,14 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		691A5F20BC4C01CBD1920738 /* Pods_GIAP_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB6545CA9B10B94133E3F9B /* Pods_GIAP_Example.framework */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		ED3463BE24038A8A00942ABD /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED3463BD24038A8A00942ABD /* ExternalAccessory.framework */; };
+		ED3463CD2405084D00942ABD /* GIAPNetworkTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ED3463CC2405084D00942ABD /* GIAPNetworkTest.m */; };
+		ED6690E124057A4E00C211B9 /* GIAPDeviceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ED6690E024057A4E00C211B9 /* GIAPDeviceTest.m */; };
+		ED6690E32405838100C211B9 /* GIAPStorageTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ED6690E22405838100C211B9 /* GIAPStorageTest.m */; };
+		ED6690E5240586C000C211B9 /* GIAPTest.m in Sources */ = {isa = PBXBuildFile; fileRef = ED6690E4240586C000C211B9 /* GIAPTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +61,6 @@
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6FB6545CA9B10B94133E3F9B /* Pods_GIAP_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GIAP_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -70,6 +72,10 @@
 		D48D3153CF18B2636C7D1E8C /* Pods-GIAP_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GIAP_Tests.debug.xcconfig"; path = "Target Support Files/Pods-GIAP_Tests/Pods-GIAP_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED3463BC24038A3800942ABD /* GIAPDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GIAPDemo.entitlements; sourceTree = "<group>"; };
 		ED3463BD24038A8A00942ABD /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		ED3463CC2405084D00942ABD /* GIAPNetworkTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GIAPNetworkTest.m; sourceTree = "<group>"; };
+		ED6690E024057A4E00C211B9 /* GIAPDeviceTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GIAPDeviceTest.m; sourceTree = "<group>"; };
+		ED6690E22405838100C211B9 /* GIAPStorageTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GIAPStorageTest.m; sourceTree = "<group>"; };
+		ED6690E4240586C000C211B9 /* GIAPTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GIAPTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,7 +182,10 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
+				ED3463CC2405084D00942ABD /* GIAPNetworkTest.m */,
+				ED6690E024057A4E00C211B9 /* GIAPDeviceTest.m */,
+				ED6690E22405838100C211B9 /* GIAPStorageTest.m */,
+				ED6690E4240586C000C211B9 /* GIAPTest.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -232,6 +241,7 @@
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
+				800F13135CF41050612D079C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -343,6 +353,26 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		800F13135CF41050612D079C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GIAP_Tests/Pods-GIAP_Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GIAP_Tests/Pods-GIAP_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		EDE1DDB1041446072D12816E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -382,7 +412,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				ED6690E32405838100C211B9 /* GIAPStorageTest.m in Sources */,
+				ED6690E124057A4E00C211B9 /* GIAPDeviceTest.m in Sources */,
+				ED6690E5240586C000C211B9 /* GIAPTest.m in Sources */,
+				ED3463CD2405084D00942ABD /* GIAPNetworkTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,10 +615,15 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"GIAP\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GIAP_Example.app/GIAP_Example";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GIAPDemo.app/GIAPDemo";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -603,10 +641,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"GIAP\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GIAP_Example.app/GIAP_Example";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GIAPDemo.app/GIAPDemo";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

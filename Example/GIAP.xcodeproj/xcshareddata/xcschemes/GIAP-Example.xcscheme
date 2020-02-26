@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6003F589195388D20070C39A"
-               BuildableName = "GIAP_Example.app"
+               BuildableName = "GIAPDemo.app"
                BlueprintName = "GIAP_Example"
                ReferencedContainer = "container:GIAP.xcodeproj">
             </BuildableReference>
@@ -31,7 +31,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "GIAP_Example.app"
+            BuildableName = "GIAPDemo.app"
             BlueprintName = "GIAP_Example"
             ReferencedContainer = "container:GIAP.xcodeproj">
          </BuildableReference>
@@ -46,6 +46,14 @@
                BlueprintName = "GIAP_Tests"
                ReferencedContainer = "container:GIAP.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "GIAPNETworkTest">
+               </Test>
+               <Test
+                  Identifier = "GIAPNETworkTest/GIAPNetwork_WhenItHasNotBeenInitialized_ShouldBeInitializedCorrectly">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
@@ -64,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "GIAP_Example.app"
+            BuildableName = "GIAPDemo.app"
             BlueprintName = "GIAP_Example"
             ReferencedContainer = "container:GIAP.xcodeproj">
          </BuildableReference>
@@ -81,7 +89,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "GIAP_Example.app"
+            BuildableName = "GIAPDemo.app"
             BlueprintName = "GIAP_Example"
             ReferencedContainer = "container:GIAP.xcodeproj">
          </BuildableReference>

@@ -1,9 +1,9 @@
 {
   "name": "GIAP",
   "version": "0.1.0",
-  "summary": "A short description of GIAP.",
+  "summary": "A SDK to help your app communicate with Got It Analytics Platform.",
   "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/uendno/GIAP",
+  "homepage": "https://github.com/tutoruniverse/giap_ios",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,7 +12,7 @@
     "uendno": "uendno@gmail.com"
   },
   "source": {
-    "git": "https://github.com/uendno/GIAP.git",
+    "git": "https://github.com/tutoruniverse/giap_ios.git",
     "tag": "0.1.0"
   },
   "platforms": {

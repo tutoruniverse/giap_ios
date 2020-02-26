@@ -13,6 +13,9 @@
 
 @interface GIAPStorage : NSObject
 
+@property (atomic, copy) NSString *token;
+
++ (instancetype)initWithToken:(NSString *)token;
 - (NSString *)getDistinctId;
 - (NSString *)resetDistinctId;
 - (NSString *)getUUIDDeviceId;

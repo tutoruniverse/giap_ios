@@ -12,11 +12,13 @@
 
 @implementation GIAPStorage: NSObject
 
-- (instancetype)init
++ (instancetype)initWithToken:(NSString *)token
 {
-    self.userDefaults = [NSUserDefaults standardUserDefaults];
+    GIAPStorage *instance = [[GIAPStorage alloc] init];
+    instance.token = token;
+    instance.userDefaults = [NSUserDefaults standardUserDefaults];
     
-    return self;
+    return instance;
 }
 
 - (NSString *)getDistinctId
@@ -76,7 +78,7 @@
 
 - (NSString *)getPrefixedKeyForKey:(NSString *)key
 {
-    return [NSString stringWithFormat:@"%@%@", STORAGE_PREFIX, key];
+    return [NSString stringWithFormat:@"%@_%@", self.token, key];
 }
 
 @end

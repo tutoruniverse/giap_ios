@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import "GIAPNetwork.h"
-#import "GIAPNetwork+Private.h"
 
 @implementation GIAPNetwork: NSObject
 

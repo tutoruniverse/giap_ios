@@ -1,16 +1,39 @@
 PODS:
   - GIAP (0.1.0)
+  - OCMock (3.6)
+  - OHHTTPStubs (9.0.0):
+    - OHHTTPStubs/Default (= 9.0.0)
+  - OHHTTPStubs/Core (9.0.0)
+  - OHHTTPStubs/Default (9.0.0):
+    - OHHTTPStubs/Core
+    - OHHTTPStubs/JSON
+    - OHHTTPStubs/NSURLSession
+    - OHHTTPStubs/OHPathHelpers
+  - OHHTTPStubs/JSON (9.0.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/NSURLSession (9.0.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/OHPathHelpers (9.0.0)
 
 DEPENDENCIES:
   - GIAP (from `../`)
+  - OCMock
+  - OHHTTPStubs
+
+SPEC REPOS:
+  trunk:
+    - OCMock
+    - OHHTTPStubs
 
 EXTERNAL SOURCES:
   GIAP:
     :path: "../"
 
 SPEC CHECKSUMS:
-  GIAP: 720d014da86920eafc3e47810d6160d47fe9f80d
+  GIAP: 9c28c180bc463c2f16aa06b05b40136047aba35a
+  OCMock: 5ea90566be239f179ba766fd9fbae5885040b992
+  OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
 
-PODFILE CHECKSUM: 54d82eb5a6f4dbafdbe5d9a9e360d0326cf18402
+PODFILE CHECKSUM: 61ee0bd65b81aeef2621cee68fb25b51439cdadc
 
 COCOAPODS: 1.8.4

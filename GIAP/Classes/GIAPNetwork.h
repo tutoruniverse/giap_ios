@@ -11,7 +11,12 @@
 
 #endif /* GIAPNetwork_h */
 
+
 @interface GIAPNetwork : NSObject
+
+@property (atomic, copy) NSString *token;
+@property (atomic, copy) NSURL *serverUrl;
+@property (atomic, retain) NSURLSession *urlSession;
 
 + (instancetype)initWithToken:(NSString *) token serverUrl:(NSURL *)serverURL;
 - (void) emitEvents:(NSArray *)events completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;

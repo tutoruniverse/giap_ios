@@ -10,7 +10,6 @@
 
 #import <Foundation/Foundation.h>
 #import "GIAPDevice.h"
-#import "GIAPDevice+Private.h"
 #import "Constants.h"
 
 @implementation GIAPDevice: NSObject

@@ -8,6 +8,7 @@
 #ifndef GIAP_h
 #define GIAP_h
 
+@protocol GIAPDelegate;
 
 #endif /* GIAP_h */
 
@@ -19,11 +20,15 @@
 
 @property (atomic, readonly) NSString * _Nonnull deviceId;
 
+@property (atomic, weak) id<GIAPDelegate> _Nullable delegate;
+
 #pragma mark Methods
 
 + (nullable instancetype)initWithToken:(NSString * _Nonnull)token serverUrl:(NSURL * _Nonnull)serverUrl;
 
 + (nullable instancetype)sharedInstance;
+
++ (void)destroy;
 
 - (void)track:(nonnull NSString *)eventName properties:(nullable NSDictionary*) properties;
 

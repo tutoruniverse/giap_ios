@@ -22,6 +22,15 @@ static GIAP *instance;
     return instance;
 }
 
++ (void)destroy
+{
+    instance = nil;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (nullable instancetype) initWithToken:(NSString *)token serverUrl:(NSURL *)serverUrl
 {
@@ -38,7 +47,7 @@ static GIAP *instance;
     // Utilities
     self.network = [GIAPNetwork initWithToken:token serverUrl:serverUrl];
     self.device = [GIAPDevice initWithToken:token];
-    self.storage = [[GIAPStorage alloc] init];
+    self.storage = [GIAPStorage initWithToken:token];
     
     // Identity
     self.distinctId = [self.storage getDistinctId];
@@ -77,17 +86,17 @@ static GIAP *instance;
                              object:nil];
     
     instance = self;
-    return nil;
+    return instance;
 }
 
 - (void)alias:(NSString *)userId
 {
     if (!userId || [userId isEqualToString:@""]) {
-       NSException *e = [NSException
-                         exceptionWithName:@"InvalidArgument"
-                         reason:@"userId can not be nil or empty"
-                         userInfo:nil];
-       @throw e;
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"userId can not be nil or empty"
+                          userInfo:nil];
+        @throw e;
     }
     
     [self addToQueue:@{
@@ -104,11 +113,11 @@ static GIAP *instance;
 - (void)identify:(NSString *)userId
 {
     if (!userId || [userId isEqualToString:@""]) {
-       NSException *e = [NSException
-                         exceptionWithName:@"InvalidArgument"
-                         reason:@"userId can not be nil or empty"
-                         userInfo:nil];
-       @throw e;
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"userId can not be nil or empty"
+                          userInfo:nil];
+        @throw e;
     }
     
     [self addToQueue:@{
@@ -153,11 +162,11 @@ static GIAP *instance;
 - (void)setProfileProperties:(NSDictionary *)properties;
 {
     if (!properties) {
-       NSException *e = [NSException
-                         exceptionWithName:@"InvalidArgument"
-                         reason:@"properties can not be nil"
-                         userInfo:nil];
-       @throw e;
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"properties can not be nil"
+                          userInfo:nil];
+        @throw e;
     }
     
     [self addToQueue:@{
@@ -255,7 +264,7 @@ static GIAP *instance;
         while ([self shouldShiftEventFromQueue:queueCopyForFlushing]) {
             NSDictionary *task = [queueCopyForFlushing objectAtIndex:0];
             [queueCopyForFlushing removeObjectAtIndex:0];
-            NSMutableDictionary *taskData = [task valueForKey:@"data"];
+            NSMutableDictionary *taskData = [[task valueForKey:@"data"] mutableCopy];
             
             // Add event to the batch
             NSNumber *time = [task valueForKey:@"time"];
@@ -292,7 +301,7 @@ static GIAP *instance;
             if ([taskType isEqualToString:@"alias"]) {
                 // Alias
                 NSString *userId = [taskData valueForKey:@"user_id"];
-               
+                
                 
                 [self.network createAliasForUserId:userId withDistinctId:self.distinctId completionHandler:^(NSDictionary *response, NSError *error) {
                     if (self.delegate) {
@@ -319,7 +328,7 @@ static GIAP *instance;
                     }
                     
                     if (error) {
-                       shouldContinue = NO;
+                        shouldContinue = NO;
                     } else {
                         if ([response valueForKey:@"distinct_id"]) {
                             self.distinctId = userId;
