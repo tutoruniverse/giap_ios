@@ -98,8 +98,6 @@
         [request setHTTPBody:bodyData];
     }
     
-    NSLog(@"%@ http request: %@?%@", self, request, body);
-    
     return request;
 }
 

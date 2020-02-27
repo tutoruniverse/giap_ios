@@ -161,9 +161,6 @@
         
         self.carrier = carrier.carrierName;
         self.radio = radio;
-        
-        NSLog(@"Carrier: %@", self.carrier);
-        NSLog(@"Radio: %@", self.radio);
     });
 }
 
@@ -181,7 +178,6 @@ static void GIAPReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkR
     // is because it's only ever called by the reachability callback, which is already
     // set to run on the serial queue. see SCNetworkReachabilitySetDispatchQueue in init
     self.wifi = (flags & kSCNetworkReachabilityFlagsReachable) && !(flags & kSCNetworkReachabilityFlagsIsWWAN);
-    NSLog(@"Wifi: %@", self.wifi ? @"Yes" : @"No");
 }
 
 @end

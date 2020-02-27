@@ -203,8 +203,6 @@ static GIAP *instance;
     NSMutableDictionary *taskdata = [data mutableCopy];
     [taskdata setValue:epochMiliseconds forKey:@"time"];
     [self.taskQueue addObject:taskdata];
-    
-    NSLog(@"%@ Add to queue: %@", self, taskdata);
 }
 
 - (void)startFlushTimer
