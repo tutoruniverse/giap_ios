@@ -117,6 +117,7 @@
 		E3F5CF90700B3C8EA141E180FBE40131 /* OCMArgAction.h in Headers */ = {isa = PBXBuildFile; fileRef = C7448E435A8E389E1ED80E257594B9AA /* OCMArgAction.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E565E4AB3D9B0D6AAD2BC780D8D9526D /* OCMock-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B57B0438E93F3FCA6A4073E64B354BB /* OCMock-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E8657ACF1E5AACD632B0A320477B2B0D /* OCMVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B4B68624458D1A240682D731F81D1A4 /* OCMVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED18DB2C240770F300EF220E /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = ED18DB2B240770F300EF220E /* .travis.yml */; };
 		F5428CC875919DB4ECF960EE2813EF17 /* HTTPStubsMethodSwizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = AF54946B3C9E3D4705C62A26DF436CA3 /* HTTPStubsMethodSwizzling.m */; };
 		F721EF5A8F05068D44D34D1DEC4A2A29 /* HTTPStubs.h in Headers */ = {isa = PBXBuildFile; fileRef = D8D59F8310BDF76997ABF80DBC7D5394 /* HTTPStubs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9AE2E17C2C57DDA6DC388B3AF0462BA /* OCMArg.h in Headers */ = {isa = PBXBuildFile; fileRef = BCF52B32ACC4065EA4DE3009CABCE246 /* OCMArg.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -295,6 +296,7 @@
 		E9CB65F235FD8DDA7EFDCB0A403BB2D5 /* OCMock.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCMock.h; path = Source/OCMock/OCMock.h; sourceTree = "<group>"; };
 		ED0F2C3788002CCA868771114AEB1665 /* OCMNonRetainingObjectReturnValueProvider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCMNonRetainingObjectReturnValueProvider.h; path = Source/OCMock/OCMNonRetainingObjectReturnValueProvider.h; sourceTree = "<group>"; };
 		ED0FB22EA771BE0582242685626A7F31 /* Constants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = GIAP/Classes/Constants.h; sourceTree = "<group>"; };
+		ED18DB2B240770F300EF220E /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .travis.yml; path = ../../../../.travis.yml; sourceTree = "<group>"; };
 		EE1E5C4BE4AD8C97A95EFBD370268B4F /* OCMLocation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCMLocation.m; path = Source/OCMock/OCMLocation.m; sourceTree = "<group>"; };
 		EF3CF39091765429129B49FB9B0F6DBA /* Pods-GIAP_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-GIAP_Tests.modulemap"; sourceTree = "<group>"; };
 		F30C125DB91902F63DC73AEF0B0E6111 /* OCMock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OCMock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -376,6 +378,7 @@
 				8AFB6FD0E9B79338CFB5D7E13108920B /* GIAP-Info.plist */,
 				A021B5802DECEE6778695EE57371A4F4 /* GIAP-prefix.pch */,
 				752B0538596D5C794CB6A08DD41BE9A8 /* GIAP-umbrella.h */,
+				ED18DB2B240770F300EF220E /* .travis.yml */,
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/GIAP";
@@ -910,6 +913,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED18DB2C240770F300EF220E /* .travis.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

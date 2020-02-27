@@ -1,0 +1,10 @@
+branches:
+    only:
+        - master
+        - mvp/master
+osx_image: xcode11.3
+language: objective-c
+xcode_workspace: Example/GIAP.xcworkspace
+xcode_scheme: GIAP-Example
+xcode_destination: platform=iOS Simulator,OS=11.3,name=iPhone X
+podfile: Example/Podfile
