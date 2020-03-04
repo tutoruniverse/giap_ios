@@ -37,7 +37,7 @@
 - (void)identify:(nonnull NSString *)userId;
 
 - (void)setProfileProperties:(nonnull NSDictionary *)properties;
-- (void)incrementProfileProperty:(nonnull NSString *)propertyName value:(nonnull NSNumber *)value;
+- (void)increaseProfileProperty:(nonnull NSString *)propertyName value:(nonnull NSNumber *)value;
 - (void)appendToProfileProperty:(nonnull NSString *)propertyName values:(nonnull NSArray *)values;
 - (void)removeFromProfileProperty:(nonnull NSString *)propertyName values:(nonnull NSArray *)values;
 
@@ -53,7 +53,7 @@
 - (void)giap:(nonnull GIAP *)giap didCreateAliasForUserId:(nonnull NSString *)userId withDistinctId:(nonnull NSString *)distinctId withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
 - (void)giap:(nonnull GIAP *)giap didIdentifyUserId:(nonnull NSString *)userId withCurrentDistinctId:(nonnull NSString *)distinctId withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
 - (void)giap:(nonnull GIAP *)giap didUpdateProfile:(nonnull NSString *)distinctId withProperties:(nonnull NSDictionary *)properties withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
-- (void)giap:(nonnull GIAP *)giap didIncrementPropertyForProfile:(nonnull NSString *)distinctId propertyName:(nonnull NSString *)propertyName value:(nonnull NSNumber *)value withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
+- (void)giap:(nonnull GIAP *)giap didIncreasePropertyForProfile:(nonnull NSString *)distinctId propertyName:(nonnull NSString *)propertyName value:(nonnull NSNumber *)value withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
 - (void)giap:(nonnull GIAP *)giap didAppendToPropertyForProfile:(nonnull NSString *)distinctId propertyName:(nonnull NSString *)propertyName values:(nonnull NSArray *)values withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
 - (void)giap:(nonnull GIAP *)giap didRemoveFromPropertyForProfile:(nonnull NSString *)distinctId propertyName:(nonnull NSString *)propertyName values:(nonnull NSArray *)values withResponse:(nullable NSDictionary *)response andError:(nullable NSError *)error;
 - (void)giap:(nonnull GIAP *)giap didResetWithDistinctId:(nonnull NSString *)distinctId;

@@ -245,9 +245,9 @@
     }
 }
 
-- (void)giap:(GIAP *)giap didIncrementPropertyForProfile:(NSString *)distinctId propertyName:(NSString *)propertyName value:(NSNumber *)value withResponse:(NSDictionary *)response andError:(NSError *)error
+- (void)giap:(GIAP *)giap didIncreasePropertyForProfile:(NSString *)distinctId propertyName:(NSString *)propertyName value:(NSNumber *)value withResponse:(NSDictionary *)response andError:(NSError *)error
 {
-    NSLog(@"GIAP didIncrementPropertyForProfile:\n%@ propertyName:%@ value:%@", distinctId, propertyName, value);
+    NSLog(@"GIAP didIncreasePropertyForProfile:\n%@ propertyName:%@ value:%@", distinctId, propertyName, value);
     if (error) {
         NSLog(@"%@", error);
     } else {

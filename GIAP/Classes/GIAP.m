@@ -177,7 +177,7 @@ static GIAP *instance;
     [self flushQueue];
 }
 
-- (void)incrementProfileProperty:(NSString *)propertyName value:(NSNumber *)value
+- (void)increaseProfileProperty:(NSString *)propertyName value:(NSNumber *)value
 {
     if (!propertyName) {
         NSException *e = [NSException
@@ -196,7 +196,7 @@ static GIAP *instance;
     }
     
     [self addToQueue:@{
-        @"type": @"profile_updates_increment_property",
+        @"type": @"profile_updates_increase_property",
         @"data": @{
                 @"name": propertyName,
                 @"value": value
@@ -443,14 +443,14 @@ static GIAP *instance;
                     dispatch_semaphore_signal(semaphore);
                 }];
                 
-            } else if ([taskType isEqualToString:@"profile_updates_increment_property"]) {
-                // Increment a property
+            } else if ([taskType isEqualToString:@"profile_updates_increase_property"]) {
+                // Increase a property
                 NSString *propertyName = [taskData valueForKey:@"name"];
                 NSNumber *value =[taskData valueForKey:@"value"];
                 
-                [self.network incrementPropertyForProfile:self.distinctId propertyName:propertyName value:value completionHandler:^(NSDictionary *response, NSError *error) {
+                [self.network increasePropertyForProfile:self.distinctId propertyName:propertyName value:value completionHandler:^(NSDictionary *response, NSError *error) {
                     if (self.delegate) {
-                        [self.delegate giap:self didIncrementPropertyForProfile:self.distinctId propertyName:propertyName value:value withResponse:response andError:error];
+                        [self.delegate giap:self didIncreasePropertyForProfile:self.distinctId propertyName:propertyName value:value withResponse:response andError:error];
                     }
                     
                     if (error) {

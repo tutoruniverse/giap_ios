@@ -74,10 +74,10 @@
     XCTAssertTrue([requestBody isEqualToDictionary:updateData]);
 }
 
-- (void)test_incrementProperty {
+- (void)test_increaseProperty {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update profile"];
     
-    [self.network incrementPropertyForProfile:@"2" propertyName:@"count" value:[NSNumber numberWithInt:1] completionHandler:^(NSDictionary *response, NSError *error) {
+    [self.network increasePropertyForProfile:@"2" propertyName:@"count" value:[NSNumber numberWithInt:1] completionHandler:^(NSDictionary *response, NSError *error) {
         [expectation fulfill];
     }];
     
@@ -87,7 +87,7 @@
     XCTAssertTrue([self.testRequest.HTTPMethod isEqualToString:@"PUT"]);
     XCTAssertTrue([[self.testRequest.URL path] isEqualToString:@"/profiles/2/count"]);
     NSDictionary *postData = @{
-        @"operation": @"increment",
+        @"operation": @"increase",
         @"value": [NSNumber numberWithInt:1]
     };
     XCTAssertTrue([requestBody isEqualToDictionary:postData]);

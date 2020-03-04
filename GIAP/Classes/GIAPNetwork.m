@@ -65,10 +65,10 @@
     }] resume];
 }
 
-- (void)incrementPropertyForProfile:(NSString *)profileId propertyName:(NSString *)propertyName value:(NSNumber *)value completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
+- (void)increasePropertyForProfile:(NSString *)profileId propertyName:(NSString *)propertyName value:(NSNumber *)value completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
 {
     NSURLRequest* request = [self buildRequestForEndpoint:[NSString stringWithFormat:@"/profiles/%@/%@", profileId, propertyName] byHTTPMethod:@"PUT" withQueryItems:nil andBody:@{
-        @"operation": @"increment",
+        @"operation": @"increase",
         @"value": value
     }];
     

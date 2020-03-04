@@ -41,7 +41,7 @@
     XCTestExpectation *aliasExpectation = [[XCTestExpectation alloc] initWithDescription:@"Alias"];
     XCTestExpectation *identifyExpectation = [[XCTestExpectation alloc] initWithDescription:@"Identify"];
     XCTestExpectation *setPropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Set Properties"];
-    XCTestExpectation *incrementPropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Increment Property"];
+    XCTestExpectation *increasePropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Increase Property"];
     XCTestExpectation *appendToPropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Append To Property"];
     XCTestExpectation *removeFromPropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Remove From Property"];
     
@@ -92,8 +92,8 @@
         void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
         [invocation getArgument:&callback atIndex:5];
         callback(@{}, nil);
-        [incrementPropertiesExpectation fulfill];
-    }] incrementPropertyForProfile:[OCMArg any] propertyName:[OCMArg any] value:[OCMArg any] completionHandler:[OCMArg any]];
+        [increasePropertiesExpectation fulfill];
+    }] increasePropertyForProfile:[OCMArg any] propertyName:[OCMArg any] value:[OCMArg any] completionHandler:[OCMArg any]];
     
     [[[networkMock stub] andDo:^(NSInvocation *invocation) {
         void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
@@ -134,11 +134,11 @@
         @"problem_text": @"Hello"
     }];
     
-    [self.giap incrementProfileProperty:@"count" value:[NSNumber numberWithInt:1]];
+    [self.giap increaseProfileProperty:@"count" value:[NSNumber numberWithInt:1]];
     [self.giap appendToProfileProperty:@"tags" values:[NSArray arrayWithObjects:@"red", @"blue", nil]];
     [self.giap removeFromProfileProperty:@"tags" values:[NSArray arrayWithObjects:@"red", nil]];
     
-    [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, aliasExpectation, setPropertiesExpectation, incrementPropertiesExpectation, appendToPropertiesExpectation, removeFromPropertiesExpectation, nil] timeout:10];
+    [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, aliasExpectation, setPropertiesExpectation, increasePropertiesExpectation, appendToPropertiesExpectation, removeFromPropertiesExpectation, nil] timeout:10];
 }
 
 -(void)test_getTaskQueueFromStorage
