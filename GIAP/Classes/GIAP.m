@@ -177,6 +177,93 @@ static GIAP *instance;
     [self flushQueue];
 }
 
+- (void)incrementProfileProperty:(NSString *)propertyName value:(NSNumber *)value
+{
+    if (!propertyName) {
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"propertyName can not be nil"
+                          userInfo:nil];
+        @throw e;
+    }
+    
+    if (!value) {
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"value can not be nil"
+                          userInfo:nil];
+        @throw e;
+    }
+    
+    [self addToQueue:@{
+        @"type": @"profile_updates_increment_property",
+        @"data": @{
+                @"name": propertyName,
+                @"value": value
+        }
+    }];
+    
+    [self flushQueue];
+}
+
+- (void)appendToProfileProperty:(NSString *)propertyName values:(NSArray *)values
+{
+    if (!propertyName) {
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"propertyName can not be nil"
+                          userInfo:nil];
+        @throw e;
+    }
+    
+    if (!values) {
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"values can not be nil"
+                          userInfo:nil];
+        @throw e;
+    }
+    
+    [self addToQueue:@{
+        @"type": @"profile_updates_append_to_property",
+        @"data": @{
+                @"name": propertyName,
+                @"value": values
+        }
+    }];
+    
+    [self flushQueue];
+}
+
+- (void)removeFromProfileProperty:(NSString *)propertyName values:(NSArray *)values
+{
+    if (!propertyName) {
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"propertyName can not be nil"
+                          userInfo:nil];
+        @throw e;
+    }
+    
+    if (!values) {
+        NSException *e = [NSException
+                          exceptionWithName:@"InvalidArgument"
+                          reason:@"values can not be nil"
+                          userInfo:nil];
+        @throw e;
+    }
+    
+    [self addToQueue:@{
+        @"type": @"profile_updates_remove_from_property",
+        @"data": @{
+                @"name": propertyName,
+                @"value": values
+        }
+    }];
+    
+    [self flushQueue];
+}
+
 - (void)reset
 {
     [self addToQueue:@{
@@ -344,6 +431,64 @@ static GIAP *instance;
                 [self.network updateProfileWithId:self.distinctId updateData:taskData completionHandler:^(NSDictionary *response, NSError *error) {
                     if (self.delegate) {
                         [self.delegate giap:self didUpdateProfile:self.distinctId withProperties:taskData withResponse:response andError:error];
+                    }
+                    
+                    if (error) {
+                        shouldContinue = NO;
+                    } else {
+                        [self.taskQueue removeObjectAtIndex:0];
+                        shouldContinue = YES;
+                    }
+                    
+                    dispatch_semaphore_signal(semaphore);
+                }];
+                
+            } else if ([taskType isEqualToString:@"profile_updates_increment_property"]) {
+                // Increment a property
+                NSString *propertyName = [taskData valueForKey:@"name"];
+                NSNumber *value =[taskData valueForKey:@"value"];
+                
+                [self.network incrementPropertyForProfile:self.distinctId propertyName:propertyName value:value completionHandler:^(NSDictionary *response, NSError *error) {
+                    if (self.delegate) {
+                        [self.delegate giap:self didIncrementPropertyForProfile:self.distinctId propertyName:propertyName value:value withResponse:response andError:error];
+                    }
+                    
+                    if (error) {
+                        shouldContinue = NO;
+                    } else {
+                        [self.taskQueue removeObjectAtIndex:0];
+                        shouldContinue = YES;
+                    }
+                    
+                    dispatch_semaphore_signal(semaphore);
+                }];
+            } else if ([taskType isEqualToString:@"profile_updates_append_to_property"]) {
+                // Append to a property
+                NSString *propertyName = [taskData valueForKey:@"name"];
+                NSArray *values =[taskData valueForKey:@"values"];
+                
+                [self.network appendToPropertyForProfile:self.distinctId propertyName:propertyName values:values completionHandler:^(NSDictionary *response, NSError *error) {
+                    if (self.delegate) {
+                        [self.delegate giap:self didAppendToPropertyForProfile:self.distinctId propertyName:propertyName values:values withResponse:response andError:error];
+                    }
+                    
+                    if (error) {
+                        shouldContinue = NO;
+                    } else {
+                        [self.taskQueue removeObjectAtIndex:0];
+                        shouldContinue = YES;
+                    }
+                    
+                    dispatch_semaphore_signal(semaphore);
+                }];
+            } else if ([taskType isEqualToString:@"profile_updates_remove_from_property"]) {
+                // Remove from a property
+                NSString *propertyName = [taskData valueForKey:@"name"];
+                NSArray *values =[taskData valueForKey:@"values"];
+                
+                [self.network removeFromPropertyForProfile:self.distinctId propertyName:propertyName values:values completionHandler:^(NSDictionary *response, NSError *error) {
+                    if (self.delegate) {
+                        [self.delegate giap:self didRemoveFromPropertyForProfile:self.distinctId propertyName:propertyName values:values withResponse:response andError:error];
                     }
                     
                     if (error) {

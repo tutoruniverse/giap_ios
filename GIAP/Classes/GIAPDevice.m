@@ -36,7 +36,7 @@
                                                object:nil];
     
     // wifi
-    if ((self.reachability = SCNetworkReachabilityCreateWithName(NULL, "api.mixpanel.com")) != NULL) {
+    if ((self.reachability = SCNetworkReachabilityCreateWithName(NULL, "analytics-api.got-it.ai")) != NULL) {
         SCNetworkReachabilityContext context = {0, (__bridge void*)self, NULL, NULL, NULL};
         if (SCNetworkReachabilitySetCallback(self.reachability, GIAPReachabilityCallback, &context)) {
             if (!SCNetworkReachabilitySetDispatchQueue(self.reachability, self.serialQueue)) {

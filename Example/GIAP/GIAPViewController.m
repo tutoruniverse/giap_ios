@@ -245,4 +245,34 @@
     }
 }
 
+- (void)giap:(GIAP *)giap didIncrementPropertyForProfile:(NSString *)distinctId propertyName:(NSString *)propertyName value:(NSNumber *)value withResponse:(NSDictionary *)response andError:(NSError *)error
+{
+    NSLog(@"GIAP didIncrementPropertyForProfile:\n%@ propertyName:%@ value:%@", distinctId, propertyName, value);
+    if (error) {
+        NSLog(@"%@", error);
+    } else {
+        NSLog(@"%@", response);
+    }
+}
+
+- (void)giap:(GIAP *)giap didAppendToPropertyForProfile:(NSString *)distinctId propertyName:(NSString *)propertyName values:(NSArray *)values withResponse:(NSDictionary *)response andError:(NSError *)error
+{
+    NSLog(@"GIAP didAppendToPropertyForProfile:\n%@ propertyName:%@ values:%@", distinctId, propertyName, values);
+    if (error) {
+        NSLog(@"%@", error);
+    } else {
+        NSLog(@"%@", response);
+    }
+}
+
+- (void)giap:(GIAP *)giap didRemoveFromPropertyForProfile:(NSString *)distinctId propertyName:(NSString *)propertyName values:(NSArray *)values withResponse:(NSDictionary *)response andError:(NSError *)error
+{
+    NSLog(@"GIAP didRemoveFromPropertyForProfile:\n%@ propertyName:%@ values:%@", distinctId, propertyName, values);
+    if (error) {
+        NSLog(@"%@", error);
+    } else {
+        NSLog(@"%@", response);
+    }
+}
+
 @end

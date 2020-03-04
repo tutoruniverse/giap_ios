@@ -41,6 +41,9 @@
     XCTestExpectation *aliasExpectation = [[XCTestExpectation alloc] initWithDescription:@"Alias"];
     XCTestExpectation *identifyExpectation = [[XCTestExpectation alloc] initWithDescription:@"Identify"];
     XCTestExpectation *setPropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Set Properties"];
+    XCTestExpectation *incrementPropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Increment Property"];
+    XCTestExpectation *appendToPropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Append To Property"];
+    XCTestExpectation *removeFromPropertiesExpectation = [[XCTestExpectation alloc] initWithDescription:@"Remove From Property"];
     
     [trackExpectation setExpectedFulfillmentCount:2];
     
@@ -85,6 +88,27 @@
         [setPropertiesExpectation fulfill];
     }] updateProfileWithId:[OCMArg any] updateData:[OCMArg any] completionHandler:[OCMArg any]];
     
+    [[[networkMock stub] andDo:^(NSInvocation *invocation) {
+        void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
+        [invocation getArgument:&callback atIndex:5];
+        callback(@{}, nil);
+        [incrementPropertiesExpectation fulfill];
+    }] incrementPropertyForProfile:[OCMArg any] propertyName:[OCMArg any] value:[OCMArg any] completionHandler:[OCMArg any]];
+    
+    [[[networkMock stub] andDo:^(NSInvocation *invocation) {
+        void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
+        [invocation getArgument:&callback atIndex:5];
+        callback(@{}, nil);
+        [appendToPropertiesExpectation fulfill];
+    }] appendToPropertyForProfile:[OCMArg any] propertyName:[OCMArg any] values:[OCMArg any] completionHandler:[OCMArg any]];
+    
+    [[[networkMock stub] andDo:^(NSInvocation *invocation) {
+           void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
+           [invocation getArgument:&callback atIndex:5];
+           callback(@{}, nil);
+           [removeFromPropertiesExpectation fulfill];
+       }] removeFromPropertyForProfile:[OCMArg any] propertyName:[OCMArg any] values:[OCMArg any] completionHandler:[OCMArg any]];
+    
     [[[networkMock stub] andReturn:networkMock] initWithToken:[OCMArg any] serverUrl:[OCMArg any]];
     
     [self initGIAP];
@@ -110,7 +134,11 @@
         @"problem_text": @"Hello"
     }];
     
-    [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, aliasExpectation, setPropertiesExpectation, nil] timeout:10];
+    [self.giap incrementProfileProperty:@"count" value:[NSNumber numberWithInt:1]];
+    [self.giap appendToProfileProperty:@"tags" values:[NSArray arrayWithObjects:@"red", @"blue", nil]];
+    [self.giap removeFromProfileProperty:@"tags" values:[NSArray arrayWithObjects:@"red", nil]];
+    
+    [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, aliasExpectation, setPropertiesExpectation, incrementPropertiesExpectation, appendToPropertiesExpectation, removeFromPropertiesExpectation, nil] timeout:10];
 }
 
 -(void)test_getTaskQueueFromStorage

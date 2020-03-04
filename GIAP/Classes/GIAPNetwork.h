@@ -19,9 +19,12 @@
 @property (atomic, retain) NSURLSession *urlSession;
 
 + (instancetype)initWithToken:(NSString *) token serverUrl:(NSURL *)serverURL;
-- (void) emitEvents:(NSArray *)events completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
-- (void) updateProfileWithId:(NSString *)profileId updateData:(NSDictionary *)updateData completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
-- (void) createAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
-- (void) identifyWithUserId:(NSString *)userId fromDistinctId:(NSString *) distinctId completionHandler:(void (^)(NSDictionary* , NSError*))completionHandler;
+- (void)emitEvents:(NSArray *)events completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
+- (void)updateProfileWithId:(NSString *)profileId updateData:(NSDictionary *)updateData completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
+- (void)createAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
+- (void)identifyWithUserId:(NSString *)userId fromDistinctId:(NSString *) distinctId completionHandler:(void (^)(NSDictionary* , NSError*))completionHandler;
+- (void)incrementPropertyForProfile:(NSString *)profileId propertyName:(NSString *)propertyName value:(NSNumber *)value completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
+- (void)appendToPropertyForProfile:(NSString *)profileId propertyName:(NSString *)propertyName values:(NSArray *)values completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
+- (void)removeFromPropertyForProfile:(NSString *)profileId propertyName:(NSString *)propertyName values:(NSArray *)values completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler;
 
 @end

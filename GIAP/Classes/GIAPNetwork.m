@@ -23,7 +23,7 @@
     return instance;
 }
 
-- (void) emitEvents:(NSArray *)events completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
+- (void)emitEvents:(NSArray *)events completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
 {
     NSURLRequest* request = [self buildRequestForEndpoint:@"/events" byHTTPMethod:@"POST" withQueryItems:nil andBody: @{
         @"events": events
@@ -34,7 +34,7 @@
     }] resume];
 }
 
-- (void) updateProfileWithId:(NSString *)profileId updateData:(NSDictionary *)updateData completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
+- (void)updateProfileWithId:(NSString *)profileId updateData:(NSDictionary *)updateData completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
 {
     NSURLRequest* request = [self buildRequestForEndpoint:[NSString stringWithFormat:@"/profiles/%@", profileId] byHTTPMethod:@"PUT" withQueryItems:nil andBody:updateData];
     
@@ -43,7 +43,7 @@
     }] resume];
 }
 
-- (void) createAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
+- (void)createAliasForUserId:(NSString *)userId withDistinctId:(NSString *)distinctId completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
 {
     NSURLRequest* request = [self buildRequestForEndpoint:@"/alias" byHTTPMethod:@"POST" withQueryItems:nil andBody:@{
         @"user_id": userId,
@@ -55,10 +55,46 @@
     }] resume];
 }
 
-- (void) identifyWithUserId:(NSString *)userId fromDistinctId:(NSString *) distinctId completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
+- (void)identifyWithUserId:(NSString *)userId fromDistinctId:(NSString *) distinctId completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
 {
     NSArray *queryItems = [NSArray arrayWithObject:[[NSURLQueryItem alloc] initWithName:@"current_distinct_id" value:distinctId]];
     NSURLRequest* request = [self buildRequestForEndpoint:[NSString stringWithFormat:@"/alias/%@", userId] byHTTPMethod:@"GET" withQueryItems:queryItems andBody:nil];
+    
+    [[self.urlSession dataTaskWithRequest:request completionHandler: ^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self parseResponseData:data error:error completionHandler:completionHandler];
+    }] resume];
+}
+
+- (void)incrementPropertyForProfile:(NSString *)profileId propertyName:(NSString *)propertyName value:(NSNumber *)value completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
+{
+    NSURLRequest* request = [self buildRequestForEndpoint:[NSString stringWithFormat:@"/profiles/%@/%@", profileId, propertyName] byHTTPMethod:@"PUT" withQueryItems:nil andBody:@{
+        @"operation": @"increment",
+        @"value": value
+    }];
+    
+    [[self.urlSession dataTaskWithRequest:request completionHandler: ^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self parseResponseData:data error:error completionHandler:completionHandler];
+    }] resume];
+}
+
+- (void)appendToPropertyForProfile:(NSString *)profileId propertyName:(NSString *)propertyName values:(NSArray *)values completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
+{
+    NSURLRequest* request = [self buildRequestForEndpoint:[NSString stringWithFormat:@"/profiles/%@/%@", profileId, propertyName] byHTTPMethod:@"PUT" withQueryItems:nil andBody:@{
+        @"operation": @"append",
+        @"value": values
+    }];
+    
+    [[self.urlSession dataTaskWithRequest:request completionHandler: ^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self parseResponseData:data error:error completionHandler:completionHandler];
+    }] resume];
+}
+
+- (void)removeFromPropertyForProfile:(NSString *)profileId propertyName:(NSString *)propertyName values:(NSArray *)values completionHandler:(void (^)(NSDictionary*, NSError*))completionHandler
+{
+    NSURLRequest* request = [self buildRequestForEndpoint:[NSString stringWithFormat:@"/profiles/%@/%@", profileId, propertyName] byHTTPMethod:@"PUT" withQueryItems:nil andBody:@{
+        @"operation": @"remove",
+        @"value": values
+    }];
     
     [[self.urlSession dataTaskWithRequest:request completionHandler: ^(NSData *data, NSURLResponse *response, NSError *error) {
         [self parseResponseData:data error:error completionHandler:completionHandler];

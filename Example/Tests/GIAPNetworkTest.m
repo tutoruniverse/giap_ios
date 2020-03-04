@@ -56,14 +56,13 @@
 }
 
 - (void)test_updateProfile {
-    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Send event"];
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update profile"];
     
     NSDictionary *updateData = @{
         @"name": @"Dumb"
     };
     
     [self.network updateProfileWithId:@"2" updateData:updateData completionHandler:^(NSDictionary *response, NSError *error) {
-        NSLog(@"%@", response);
         [expectation fulfill];
     }];
     
@@ -73,6 +72,65 @@
     XCTAssertTrue([self.testRequest.HTTPMethod isEqualToString:@"PUT"]);
     XCTAssertTrue([[self.testRequest.URL path] isEqualToString:@"/profiles/2"]);
     XCTAssertTrue([requestBody isEqualToDictionary:updateData]);
+}
+
+- (void)test_incrementProperty {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update profile"];
+    
+    [self.network incrementPropertyForProfile:@"2" propertyName:@"count" value:[NSNumber numberWithInt:1] completionHandler:^(NSDictionary *response, NSError *error) {
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectations:[NSArray arrayWithObject:expectation] timeout:10];
+    NSDictionary* requestBody = [self parseHTTPBodyStream:self.testRequest.HTTPBodyStream];
+    
+    XCTAssertTrue([self.testRequest.HTTPMethod isEqualToString:@"PUT"]);
+    XCTAssertTrue([[self.testRequest.URL path] isEqualToString:@"/profiles/2/count"]);
+    NSDictionary *postData = @{
+        @"operation": @"increment",
+        @"value": [NSNumber numberWithInt:1]
+    };
+    XCTAssertTrue([requestBody isEqualToDictionary:postData]);
+}
+
+- (void)test_appendToProperty {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update profile"];
+    NSArray *values = [NSArray arrayWithObjects:@"red", @"blue", nil];
+    
+    [self.network appendToPropertyForProfile:@"2" propertyName:@"tags" values:values completionHandler:^(NSDictionary *response, NSError *error) {
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectations:[NSArray arrayWithObject:expectation] timeout:10];
+    NSDictionary* requestBody = [self parseHTTPBodyStream:self.testRequest.HTTPBodyStream];
+    
+    XCTAssertTrue([self.testRequest.HTTPMethod isEqualToString:@"PUT"]);
+    XCTAssertTrue([[self.testRequest.URL path] isEqualToString:@"/profiles/2/tags"]);
+    NSDictionary *postData = @{
+        @"operation": @"append",
+        @"value": values
+    };
+    XCTAssertTrue([requestBody isEqualToDictionary:postData]);
+}
+
+- (void)test_removeFromProperty{
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update profile"];
+    NSArray *values = [NSArray arrayWithObjects:@"red", @"blue", nil];
+    
+    [self.network removeFromPropertyForProfile:@"2" propertyName:@"tags" values:values completionHandler:^(NSDictionary *response, NSError *error) {
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectations:[NSArray arrayWithObject:expectation] timeout:10];
+    NSDictionary* requestBody = [self parseHTTPBodyStream:self.testRequest.HTTPBodyStream];
+    
+    XCTAssertTrue([self.testRequest.HTTPMethod isEqualToString:@"PUT"]);
+    XCTAssertTrue([[self.testRequest.URL path] isEqualToString:@"/profiles/2/tags"]);
+    NSDictionary *postData = @{
+        @"operation": @"remove",
+        @"value": values
+    };
+    XCTAssertTrue([requestBody isEqualToDictionary:postData]);
 }
 
 - (void)test_createAlias {
