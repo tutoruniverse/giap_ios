@@ -228,7 +228,7 @@ static GIAP *instance;
         @"type": @"profile_updates_append_to_property",
         @"data": @{
                 @"name": propertyName,
-                @"value": values
+                @"values": values
         }
     }];
     
@@ -257,7 +257,7 @@ static GIAP *instance;
         @"type": @"profile_updates_remove_from_property",
         @"data": @{
                 @"name": propertyName,
-                @"value": values
+                @"values": values
         }
     }];
     
@@ -448,58 +448,76 @@ static GIAP *instance;
                 NSString *propertyName = [taskData valueForKey:@"name"];
                 NSNumber *value =[taskData valueForKey:@"value"];
                 
-                [self.network increasePropertyForProfile:self.distinctId propertyName:propertyName value:value completionHandler:^(NSDictionary *response, NSError *error) {
-                    if (self.delegate) {
-                        [self.delegate giap:self didIncreasePropertyForProfile:self.distinctId propertyName:propertyName value:value withResponse:response andError:error];
-                    }
-                    
-                    if (error) {
-                        shouldContinue = NO;
-                    } else {
-                        [self.taskQueue removeObjectAtIndex:0];
-                        shouldContinue = YES;
-                    }
-                    
+                if (propertyName && value) {
+                    [self.network increasePropertyForProfile:self.distinctId propertyName:propertyName value:value completionHandler:^(NSDictionary *response, NSError *error) {
+                        if (self.delegate) {
+                            [self.delegate giap:self didIncreasePropertyForProfile:self.distinctId propertyName:propertyName value:value withResponse:response andError:error];
+                        }
+                        
+                        if (error) {
+                            shouldContinue = NO;
+                        } else {
+                            [self.taskQueue removeObjectAtIndex:0];
+                            shouldContinue = YES;
+                        }
+                        
+                        dispatch_semaphore_signal(semaphore);
+                    }];
+                } else {
+                    [self.taskQueue removeObjectAtIndex:0];
+                    shouldContinue = YES;
                     dispatch_semaphore_signal(semaphore);
-                }];
+                }
             } else if ([taskType isEqualToString:@"profile_updates_append_to_property"]) {
                 // Append to a property
                 NSString *propertyName = [taskData valueForKey:@"name"];
                 NSArray *values =[taskData valueForKey:@"values"];
                 
-                [self.network appendToPropertyForProfile:self.distinctId propertyName:propertyName values:values completionHandler:^(NSDictionary *response, NSError *error) {
-                    if (self.delegate) {
-                        [self.delegate giap:self didAppendToPropertyForProfile:self.distinctId propertyName:propertyName values:values withResponse:response andError:error];
-                    }
-                    
-                    if (error) {
-                        shouldContinue = NO;
-                    } else {
-                        [self.taskQueue removeObjectAtIndex:0];
-                        shouldContinue = YES;
-                    }
-                    
+                if (propertyName && values) {
+                    [self.network appendToPropertyForProfile:self.distinctId propertyName:propertyName values:values completionHandler:^(NSDictionary *response, NSError *error) {
+                        if (self.delegate) {
+                            [self.delegate giap:self didAppendToPropertyForProfile:self.distinctId propertyName:propertyName values:values withResponse:response andError:error];
+                        }
+                        
+                        if (error) {
+                            shouldContinue = NO;
+                        } else {
+                            [self.taskQueue removeObjectAtIndex:0];
+                            shouldContinue = YES;
+                        }
+                        
+                        dispatch_semaphore_signal(semaphore);
+                    }];
+                } else {
+                    [self.taskQueue removeObjectAtIndex:0];
+                    shouldContinue = YES;
                     dispatch_semaphore_signal(semaphore);
-                }];
+                }
             } else if ([taskType isEqualToString:@"profile_updates_remove_from_property"]) {
                 // Remove from a property
                 NSString *propertyName = [taskData valueForKey:@"name"];
                 NSArray *values =[taskData valueForKey:@"values"];
                 
-                [self.network removeFromPropertyForProfile:self.distinctId propertyName:propertyName values:values completionHandler:^(NSDictionary *response, NSError *error) {
-                    if (self.delegate) {
-                        [self.delegate giap:self didRemoveFromPropertyForProfile:self.distinctId propertyName:propertyName values:values withResponse:response andError:error];
-                    }
-                    
-                    if (error) {
-                        shouldContinue = NO;
-                    } else {
-                        [self.taskQueue removeObjectAtIndex:0];
-                        shouldContinue = YES;
-                    }
-                    
+                if (propertyName && values) {
+                    [self.network removeFromPropertyForProfile:self.distinctId propertyName:propertyName values:values completionHandler:^(NSDictionary *response, NSError *error) {
+                        if (self.delegate) {
+                            [self.delegate giap:self didRemoveFromPropertyForProfile:self.distinctId propertyName:propertyName values:values withResponse:response andError:error];
+                        }
+                        
+                        if (error) {
+                            shouldContinue = NO;
+                        } else {
+                            [self.taskQueue removeObjectAtIndex:0];
+                            shouldContinue = YES;
+                        }
+                        
+                        dispatch_semaphore_signal(semaphore);
+                    }];
+                } else {
+                    [self.taskQueue removeObjectAtIndex:0];
+                    shouldContinue = YES;
                     dispatch_semaphore_signal(semaphore);
-                }];
+                }
             } else if ([taskType isEqualToString:@"reset"]) {
                 // Reset
                 self.distinctId = [self.storage resetDistinctId];

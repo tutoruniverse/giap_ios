@@ -182,6 +182,66 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (IBAction)didClickIncreaseCount:(id)sender {
+    [[GIAP sharedInstance] increaseProfileProperty:@"count" value:[NSNumber numberWithInt:1]];
+}
+
+- (IBAction)didClickDecreaseCount:(id)sender {
+    [[GIAP sharedInstance] increaseProfileProperty:@"count" value:[NSNumber numberWithInt:-1]];
+}
+
+- (IBAction)didClickAddTags:(id)sender {
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Add tags"
+                                                                              message: nil
+                                                                       preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Tags, separated by \",\".";
+        textField.textColor = [UIColor blueColor];
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+    }];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSArray * textfields = alertController.textFields;
+        UITextField * tagsTextField = textfields[0];
+        NSString *tags = tagsTextField.text;
+        
+        if (tags) {
+           [[GIAP sharedInstance] appendToProfileProperty:@"tags" values:[tags componentsSeparatedByString:@","]];
+        }
+    }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (IBAction)didClickRemoveTags:(id)sender {
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Remove tags"
+                                                                              message: nil
+                                                                       preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Tags, separated by \",\".";
+        textField.textColor = [UIColor blueColor];
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+    }];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSArray * textfields = alertController.textFields;
+        UITextField * tagsTextField = textfields[0];
+        NSString *tags = tagsTextField.text;
+        
+        if (tags) {
+           [[GIAP sharedInstance] removeFromProfileProperty:@"tags" values:[tags componentsSeparatedByString:@","]];
+        }
+    }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
