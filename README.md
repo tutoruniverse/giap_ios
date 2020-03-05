@@ -77,6 +77,23 @@ At any moment after initializing the lib, you can set custom properties for curr
 }];
 ```
 
+### Update profile properties atomically
+Increase/Decrease a numeric property
+
+```objectivec
+[[GIAP sharedInstance] increaseProfileProperty:@"count" value:[NSNumber numberWithInt:1]];
+```
+Append new elements to a list property
+
+```objectivec
+[[GIAP sharedInstance] appendToProfileProperty:@"tags" values:[tags componentsSeparatedByString:@","]];
+```
+Remove elements from a list property
+
+```objectivec
+[[GIAP sharedInstance] removeFromProfileProperty:@"tags" values:[tags componentsSeparatedByString:@","]];
+```
+
 ### Reset
 Use this method right after user has just logged out
 
