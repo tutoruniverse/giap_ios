@@ -11,13 +11,11 @@
 #import "GIAP/GIAPDevice.h"
 #import "GIAP/GIAPStorage.h"
 #import "GIAP/GIAPNetwork.h"
+#import "GIAP/Constants.h"
 
 @interface GIAPTest : XCTestCase
 
 @property (atomic) GIAP *giap;
-@property (atomic, copy) NSMutableArray *taskQueue;
-@property (atomic, copy) NSString *distinctId;
-@property (atomic, copy) NSString *deviceUUID;
 
 @end
 
@@ -103,11 +101,11 @@
     }] appendToPropertyForProfile:[OCMArg any] propertyName:[OCMArg any] values:[OCMArg any] completionHandler:[OCMArg any]];
     
     [[[networkMock stub] andDo:^(NSInvocation *invocation) {
-           void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
-           [invocation getArgument:&callback atIndex:5];
-           callback(@{}, nil);
-           [removeFromPropertiesExpectation fulfill];
-       }] removeFromPropertyForProfile:[OCMArg any] propertyName:[OCMArg any] values:[OCMArg any] completionHandler:[OCMArg any]];
+        void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
+        [invocation getArgument:&callback atIndex:5];
+        callback(@{}, nil);
+        [removeFromPropertiesExpectation fulfill];
+    }] removeFromPropertyForProfile:[OCMArg any] propertyName:[OCMArg any] values:[OCMArg any] completionHandler:[OCMArg any]];
     
     [[[networkMock stub] andReturn:networkMock] initWithToken:[OCMArg any] serverUrl:[OCMArg any]];
     
@@ -249,4 +247,46 @@
     [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, nil] timeout:10];
 }
 
+-(void)testQueueSizeLimit
+{
+    XCTestExpectation *trackExpectation = [[XCTestExpectation alloc] initWithDescription:@"Track"];
+    
+    id storageMock = [OCMockObject mockForClass:[GIAPStorage class]];
+    NSMutableArray *queue =[NSMutableArray array];
+    
+    for(int i = 0; i < QUEUE_SIZE_LIMIT; i++) {
+        [queue addObject:@{
+            @"type": @"event",
+            @"data": @{
+                    @"$name": @"Visit"
+            },
+            @"time": @1582727998000
+        }];
+    }
+    
+    [[[storageMock stub] andReturn:queue] getTaskQueue];
+    [[[storageMock stub] andReturn:@"distinct_id"] getDistinctId];
+    [[[storageMock stub] andReturn:@"device_id"] getUUIDDeviceId];
+    [[[storageMock stub] andReturn:storageMock] initWithToken:[OCMArg any]];
+    
+    id networkMock = [OCMockObject mockForClass:[GIAPNetwork class]];
+    [[[networkMock stub] andDo:^(NSInvocation *invocation) {
+        void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
+        [invocation getArgument:&callback atIndex:3];
+        callback(@{}, nil);
+        NSArray *events;
+        [invocation getArgument:&events atIndex:2];
+        XCTAssertEqual([events count], QUEUE_SIZE_LIMIT);
+        [trackExpectation fulfill];
+    }] emitEvents:[OCMArg any] completionHandler:[OCMArg any]];
+    [[[networkMock stub] andReturn:networkMock] initWithToken:[OCMArg any] serverUrl:[OCMArg any]];
+    
+    [self initGIAP];
+    
+    [self.giap track:@"Visit" properties:nil];
+    
+    
+    [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, nil] timeout:10];
+}
+       
 @end

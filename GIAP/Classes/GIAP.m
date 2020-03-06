@@ -290,6 +290,10 @@ static GIAP *instance;
     NSMutableDictionary *taskdata = [data mutableCopy];
     [taskdata setValue:epochMiliseconds forKey:@"time"];
     [self.taskQueue addObject:taskdata];
+    
+    if ([self.taskQueue count] > QUEUE_SIZE_LIMIT) {
+        [self.taskQueue removeObjectAtIndex:0];
+    }
 }
 
 - (void)startFlushTimer
