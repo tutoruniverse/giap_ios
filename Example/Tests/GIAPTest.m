@@ -288,5 +288,55 @@
     
     [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, nil] timeout:10];
 }
+
+-(void)testDisable
+{
+    XCTestExpectation *track1Expectation = [[XCTestExpectation alloc] initWithDescription:@"Track 1"];
+    XCTestExpectation *track2Expectation = [[XCTestExpectation alloc] initWithDescription:@"Track 2"];
+    XCTestExpectation *saveQueueExpectation = [[XCTestExpectation alloc] initWithDescription:@"Save queue"];
+    [track2Expectation setInverted:YES];
+    int times = 1;
+    
+    id storageMock = [OCMockObject mockForClass:[GIAPStorage class]];
+    [[[storageMock stub] andReturn:nil] getTaskQueue];
+    [[[storageMock stub] andReturn:@"distinct_id"] getDistinctId];
+    [[[storageMock stub] andReturn:@"device_id"] getUUIDDeviceId];
+    [[[storageMock stub] andReturn:storageMock] initWithToken:[OCMArg any]];
+    [[[storageMock stub] andDo:^(NSInvocation *invocation) {
+        NSArray *queue;
+        [invocation getArgument:&queue atIndex:2];
+        if (queue == nil) {
+            [saveQueueExpectation fulfill];
+        }
+    }] saveTaskQueue:[OCMArg any]];
+    
+    id networkMock = [OCMockObject mockForClass:[GIAPNetwork class]];
+    [[[networkMock stub] andDo:^(NSInvocation *invocation) {
+        void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
+         [invocation getArgument:&callback atIndex:3];
+        if (times == 1) {
+            callback(@{
+                @"error_code": @40101
+            }, nil);
+            [track1Expectation fulfill];
+        } else {
+            callback(@{}, nil);
+            [track2Expectation fulfill];
+        }
+        
+    }] emitEvents:[OCMArg any] completionHandler:[OCMArg any]];
+    [[[networkMock stub] andReturn:networkMock] initWithToken:[OCMArg any] serverUrl:[OCMArg any]];
+    
+    [self initGIAP];
+       
+    [self.giap track:@"Visit" properties:nil];
+    
+    [self waitForExpectations:[NSArray arrayWithObjects:track1Expectation, nil] timeout:10];
+    
+    [self.giap track:@"Visit" properties:nil];
+    
+    [self waitForExpectations:[NSArray arrayWithObjects:track2Expectation, saveQueueExpectation, nil] timeout:10];
+    
+}
        
 @end

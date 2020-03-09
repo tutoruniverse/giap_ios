@@ -30,5 +30,6 @@
 @property (atomic, retain) NSTimer *timer;
 @property (nonatomic) dispatch_queue_t serialQueue;
 @property (atomic) BOOL flushing;
+@property (atomic) BOOL disabled;
 
 @end

@@ -61,6 +61,7 @@ static GIAP *instance;
         self.taskQueue = [NSMutableArray array];
     }
     self.flushing = NO;
+    self.disabled = NO;
     
     // Serial queue
     NSString *label = [NSString stringWithFormat:@"ai.gotit.giap.%@.%p", token, (void *)self];
@@ -284,6 +285,10 @@ static GIAP *instance;
 
 - (void)addToQueue:(NSDictionary *)data
 {
+    if (self.disabled) {
+        return;
+    }
+    
     NSTimeInterval epochInterval = [[NSDate date] timeIntervalSince1970];
     NSNumber *epochMiliseconds = @(round(epochInterval * 1000));
     
@@ -338,6 +343,28 @@ static GIAP *instance;
     return false;
 }
 
+- (void)handleTaskResult:(NSDictionary *)response error:(NSError *)error
+{
+    [self handleTaskResult:response error:error numberOfTasksToRemove:1];
+}
+
+- (void)handleTaskResult:(NSDictionary *)response error:(NSError *)error numberOfTasksToRemove:(unsigned long)numberOfTasksToRemove
+{
+    if (error) {
+        self.flushing = NO;
+    } else {
+        NSNumber *errorCode = [response valueForKey:@"error_code"];
+        if ([errorCode isEqualToNumber:[NSNumber numberWithLong:40101]]) {
+            self.disabled = YES;
+            [self stopFlushTimer];
+            [self.storage saveTaskQueue:nil];
+        } else {
+            [self.taskQueue removeObjectsInRange:NSMakeRange(0, numberOfTasksToRemove)];
+            [self keepFlushing];
+        }
+    }
+}
+
 - (void)flushQueue
 {
     dispatch_async(self.serialQueue, ^{
@@ -362,23 +389,13 @@ static GIAP *instance;
             [currentEventBatch addObject:taskData];
         }
         
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        __block BOOL shouldContinue = NO;
-        
         if ([currentEventBatch count] > 0) {
             [self.network emitEvents:currentEventBatch completionHandler:^(NSDictionary *response, NSError *error) {
                 if (self.delegate) {
                     [self.delegate giap:self didEmitEvents:currentEventBatch withResponse:response andError:error];
                 }
                 
-                if (error) {
-                    shouldContinue = NO;
-                } else {
-                    [self.taskQueue removeObjectsInRange:NSMakeRange(0, [currentEventBatch count])];
-                    shouldContinue = YES;
-                }
-                
-                dispatch_semaphore_signal(semaphore);
+                [self handleTaskResult:response error:error numberOfTasksToRemove:[currentEventBatch count]];
             }];
         } else if ([queueCopyForFlushing count] > 0) {
             NSDictionary *task = [queueCopyForFlushing objectAtIndex:0];
@@ -391,20 +408,12 @@ static GIAP *instance;
                 // Alias
                 NSString *userId = [taskData valueForKey:@"user_id"];
                 
-                
                 [self.network createAliasForUserId:userId withDistinctId:self.distinctId completionHandler:^(NSDictionary *response, NSError *error) {
                     if (self.delegate) {
                         [self.delegate giap:self didCreateAliasForUserId:userId withDistinctId:self.distinctId withResponse:response andError:error];
                     }
                     
-                    if (error) {
-                        shouldContinue = NO;
-                    } else {
-                        [self.taskQueue removeObjectAtIndex:0];
-                        shouldContinue = YES;
-                    }
-                    
-                    dispatch_semaphore_signal(semaphore);
+                    [self handleTaskResult:response error:error];
                 }];
                 
             } else if ([taskType isEqualToString:@"identify"]) {
@@ -416,17 +425,11 @@ static GIAP *instance;
                         [self.delegate giap:self didIdentifyUserId:userId withCurrentDistinctId:self.distinctId withResponse:response andError:error];
                     }
                     
-                    if (error) {
-                        shouldContinue = NO;
-                    } else {
-                        if ([response valueForKey:@"distinct_id"]) {
-                            self.distinctId = userId;
-                        }
-                        [self.taskQueue removeObjectAtIndex:0];
-                        shouldContinue = YES;
+                    if (error == nil && [response valueForKey:@"distinct_id"] != nil) {
+                        self.distinctId = userId;
                     }
                     
-                    dispatch_semaphore_signal(semaphore);
+                    [self handleTaskResult:response error:error];
                 }];
                 
                 
@@ -437,14 +440,7 @@ static GIAP *instance;
                         [self.delegate giap:self didUpdateProfile:self.distinctId withProperties:taskData withResponse:response andError:error];
                     }
                     
-                    if (error) {
-                        shouldContinue = NO;
-                    } else {
-                        [self.taskQueue removeObjectAtIndex:0];
-                        shouldContinue = YES;
-                    }
-                    
-                    dispatch_semaphore_signal(semaphore);
+                    [self handleTaskResult:response error:error];
                 }];
                 
             } else if ([taskType isEqualToString:@"profile_updates_increase_property"]) {
@@ -458,24 +454,16 @@ static GIAP *instance;
                             [self.delegate giap:self didIncreasePropertyForProfile:self.distinctId propertyName:propertyName value:value withResponse:response andError:error];
                         }
                         
-                        if (error) {
-                            shouldContinue = NO;
-                        } else {
-                            [self.taskQueue removeObjectAtIndex:0];
-                            shouldContinue = YES;
-                        }
-                        
-                        dispatch_semaphore_signal(semaphore);
+                        [self handleTaskResult:response error:error];
                     }];
                 } else {
                     [self.taskQueue removeObjectAtIndex:0];
-                    shouldContinue = YES;
-                    dispatch_semaphore_signal(semaphore);
+                    [self keepFlushing];
                 }
             } else if ([taskType isEqualToString:@"profile_updates_append_to_property"]) {
                 // Append to a property
                 NSString *propertyName = [taskData valueForKey:@"name"];
-                NSArray *values =[taskData valueForKey:@"values"];
+                NSArray *values = [taskData valueForKey:@"values"];
                 
                 if (propertyName && values) {
                     [self.network appendToPropertyForProfile:self.distinctId propertyName:propertyName values:values completionHandler:^(NSDictionary *response, NSError *error) {
@@ -483,24 +471,16 @@ static GIAP *instance;
                             [self.delegate giap:self didAppendToPropertyForProfile:self.distinctId propertyName:propertyName values:values withResponse:response andError:error];
                         }
                         
-                        if (error) {
-                            shouldContinue = NO;
-                        } else {
-                            [self.taskQueue removeObjectAtIndex:0];
-                            shouldContinue = YES;
-                        }
-                        
-                        dispatch_semaphore_signal(semaphore);
+                        [self handleTaskResult:response error:error];
                     }];
                 } else {
                     [self.taskQueue removeObjectAtIndex:0];
-                    shouldContinue = YES;
-                    dispatch_semaphore_signal(semaphore);
+                    [self keepFlushing];
                 }
             } else if ([taskType isEqualToString:@"profile_updates_remove_from_property"]) {
                 // Remove from a property
                 NSString *propertyName = [taskData valueForKey:@"name"];
-                NSArray *values =[taskData valueForKey:@"values"];
+                NSArray *values = [taskData valueForKey:@"values"];
                 
                 if (propertyName && values) {
                     [self.network removeFromPropertyForProfile:self.distinctId propertyName:propertyName values:values completionHandler:^(NSDictionary *response, NSError *error) {
@@ -508,19 +488,11 @@ static GIAP *instance;
                             [self.delegate giap:self didRemoveFromPropertyForProfile:self.distinctId propertyName:propertyName values:values withResponse:response andError:error];
                         }
                         
-                        if (error) {
-                            shouldContinue = NO;
-                        } else {
-                            [self.taskQueue removeObjectAtIndex:0];
-                            shouldContinue = YES;
-                        }
-                        
-                        dispatch_semaphore_signal(semaphore);
+                        [self handleTaskResult:response error:error];
                     }];
                 } else {
                     [self.taskQueue removeObjectAtIndex:0];
-                    shouldContinue = YES;
-                    dispatch_semaphore_signal(semaphore);
+                    [self keepFlushing];
                 }
             } else if ([taskType isEqualToString:@"reset"]) {
                 // Reset
@@ -531,21 +503,10 @@ static GIAP *instance;
                 }
                 
                 [self.taskQueue removeObjectAtIndex:0];
-                shouldContinue = YES;
-                dispatch_semaphore_signal(semaphore);
+                [self keepFlushing];
             } else {
-                shouldContinue = NO;
-                dispatch_semaphore_signal(semaphore);
+                self.flushing = NO;
             }
-        } else {
-            shouldContinue = NO;
-            dispatch_semaphore_signal(semaphore);
-        }
-        
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        
-        if (shouldContinue) {
-            [self keepFlushing];
         } else {
             self.flushing = NO;
         }
