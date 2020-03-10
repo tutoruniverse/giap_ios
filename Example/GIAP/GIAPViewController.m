@@ -154,6 +154,14 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (IBAction)didClickSendTestEvents:(id)sender {
+    for (int i = 0; i < 30; i++) {
+        [[GIAP sharedInstance] track:@"Test event" properties:@{
+            @"index": @(i + 1)
+        }];
+    }
+}
+
 - (IBAction)didClickSetFullName:(id)sender {
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Full name"
                                                                               message: nil

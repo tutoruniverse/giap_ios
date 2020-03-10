@@ -46,55 +46,62 @@
                                 </subviews>
                             </stackView>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dB5-mr-50V">
-                                <rect key="frame" x="132" y="180.5" width="111" height="306"/>
+                                <rect key="frame" x="130" y="157.5" width="115" height="352"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="We5-OJ-pac">
-                                        <rect key="frame" x="0.0" y="0.0" width="111" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="115" height="30"/>
                                         <state key="normal" title="Ask"/>
                                         <connections>
                                             <action selector="didClickAsk:" destination="whP-gf-Uak" eventType="touchUpInside" id="p6w-D0-CdO"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DBL-Jq-rFi">
-                                        <rect key="frame" x="0.0" y="46" width="111" height="30"/>
+                                        <rect key="frame" x="0.0" y="46" width="115" height="30"/>
                                         <state key="normal" title="Logout"/>
                                         <connections>
                                             <action selector="didClickLogout:" destination="whP-gf-Uak" eventType="touchUpInside" id="WMS-ic-5d3"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="198-LZ-rc5">
-                                        <rect key="frame" x="0.0" y="92" width="111" height="30"/>
+                                        <rect key="frame" x="0.0" y="92" width="115" height="30"/>
                                         <state key="normal" title="Set Full Name"/>
                                         <connections>
                                             <action selector="didClickSetFullName:" destination="whP-gf-Uak" eventType="touchUpInside" id="lQT-rb-2Zy"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hHE-ki-j86" userLabel="Increase Count">
-                                        <rect key="frame" x="0.0" y="138" width="111" height="30"/>
+                                        <rect key="frame" x="0.0" y="138" width="115" height="30"/>
                                         <state key="normal" title="Increase Count"/>
                                         <connections>
                                             <action selector="didClickIncreaseCount:" destination="whP-gf-Uak" eventType="touchUpInside" id="U6z-Iv-Fuk"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VgH-y7-Vh7">
-                                        <rect key="frame" x="0.0" y="184" width="111" height="30"/>
+                                        <rect key="frame" x="0.0" y="184" width="115" height="30"/>
                                         <state key="normal" title="Decrease Count"/>
                                         <connections>
                                             <action selector="didClickDecreaseCount:" destination="whP-gf-Uak" eventType="touchUpInside" id="PRu-dD-zyA"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yRE-jP-n5l" userLabel="Add Tags">
-                                        <rect key="frame" x="0.0" y="230" width="111" height="30"/>
+                                        <rect key="frame" x="0.0" y="230" width="115" height="30"/>
                                         <state key="normal" title="Add Tags"/>
                                         <connections>
                                             <action selector="didClickAddTags:" destination="whP-gf-Uak" eventType="touchUpInside" id="WQo-tR-Yfe"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFv-SD-1e4" userLabel="Remove Tags">
-                                        <rect key="frame" x="0.0" y="276" width="111" height="30"/>
+                                        <rect key="frame" x="0.0" y="276" width="115" height="30"/>
                                         <state key="normal" title="Remove Tags"/>
                                         <connections>
                                             <action selector="didClickRemoveTags:" destination="whP-gf-Uak" eventType="touchUpInside" id="4pG-xv-YCN"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cY5-Uu-tq0">
+                                        <rect key="frame" x="0.0" y="322" width="115" height="30"/>
+                                        <state key="normal" title="Send test events"/>
+                                        <connections>
+                                            <action selector="didClickSendTestEvents:" destination="whP-gf-Uak" eventType="touchUpInside" id="0Re-kB-YQb"/>
                                         </connections>
                                     </button>
                                 </subviews>
