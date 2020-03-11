@@ -149,13 +149,15 @@
         @"data": @{
                 @"$name": @"Visit"
         },
-        @"time": @1582727998000
+        @"time": @1582727998000,
+        @"version": VERSION
     }, @{
         @"type": @"event",
         @"data": @{
                 @"$name": @"Visit"
         },
-        @"time": @1582727998000
+        @"time": @1582727998000,
+        @"version": VERSION
     }, nil]] getTaskQueue];
     [[[storageMock stub] andReturn:@"distinct_id"] getDistinctId];
     [[[storageMock stub] andReturn:@"device_id"] getUUIDDeviceId];
@@ -260,7 +262,8 @@
             @"data": @{
                     @"$name": @"Visit"
             },
-            @"time": @1582727998000
+            @"time": @1582727998000,
+            @"version": VERSION
         }];
     }
     
@@ -337,6 +340,46 @@
     
     [self waitForExpectations:[NSArray arrayWithObjects:track2Expectation, saveQueueExpectation, nil] timeout:10];
     
+}
+
+-(void)testWrongVersion
+{
+    XCTestExpectation *trackExpectation = [[XCTestExpectation alloc] initWithDescription:@"Track"];
+    [trackExpectation setInverted:YES];
+    
+    id storageMock = [OCMockObject mockForClass:[GIAPStorage class]];
+    [[[storageMock stub] andReturn:[NSArray arrayWithObjects:@{
+        @"type": @"event",
+        @"data": @{
+                @"$name": @"Visit"
+        },
+        @"time": @1582727998000,
+        @"version": @"old"
+    }, @{
+        @"type": @"event",
+        @"data": @{
+                @"$name": @"Visit"
+        },
+        @"time": @1582727998000,
+        @"version": @"old"
+    }, nil]] getTaskQueue];
+    [[[storageMock stub] andReturn:@"distinct_id"] getDistinctId];
+    [[[storageMock stub] andReturn:@"device_id"] getUUIDDeviceId];
+    [[[storageMock stub] andReturn:storageMock] initWithToken:[OCMArg any]];
+    
+    id networkMock = [OCMockObject mockForClass:[GIAPNetwork class]];
+    [[[networkMock stub] andDo:^(NSInvocation *invocation) {
+        void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
+        [invocation getArgument:&callback atIndex:3];
+        callback(@{}, nil);
+        [trackExpectation fulfill];
+    }] emitEvents:[OCMArg any] completionHandler:[OCMArg any]];
+    [[[networkMock stub] andReturn:networkMock] initWithToken:[OCMArg any] serverUrl:[OCMArg any]];
+    
+    [self initGIAP];
+    
+    [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, nil] timeout:10];
+
 }
        
 @end

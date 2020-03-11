@@ -294,6 +294,7 @@ static GIAP *instance;
     
     NSMutableDictionary *taskdata = [data mutableCopy];
     [taskdata setValue:epochMiliseconds forKey:@"time"];
+    [taskdata setValue:VERSION forKey:@"version"];
     [self.taskQueue addObject:taskdata];
     
     if ([self.taskQueue count] > QUEUE_SIZE_LIMIT) {
@@ -373,6 +374,10 @@ static GIAP *instance;
         }
         
         self.flushing = YES;
+        
+        while([self.taskQueue count] > 0 && ![[[self.taskQueue objectAtIndex:0] valueForKey:@"version"] isEqualToString:VERSION]) {
+            [self.taskQueue removeObjectAtIndex:0];
+        }
         
         NSMutableArray *currentEventBatch = [NSMutableArray array];
         NSMutableArray *queueCopyForFlushing = [self.taskQueue mutableCopy];
