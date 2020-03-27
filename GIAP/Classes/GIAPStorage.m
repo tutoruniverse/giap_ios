@@ -23,12 +23,17 @@
 
 - (NSString *)getDistinctId
 {
-    return [self getUUIDForKey:@"deviceId"];
+    return [self getUUIDForKey:@"distinctId"];
+}
+
+- (void)setDistinctId:(NSString *)distinctId
+{
+    [self.userDefaults setObject:distinctId forKey:[self getPrefixedKeyForKey:@"distinctId"]];
 }
 
 - (NSString *)resetDistinctId
 {
-    return [self resetUUIDForKey:@"deviceId"];
+    return [self resetUUIDForKey:@"distinctId"];
 }
 
 - (NSString *)getUUIDDeviceId

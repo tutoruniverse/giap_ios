@@ -17,6 +17,7 @@
 
 + (instancetype)initWithToken:(NSString *)token;
 - (NSString *)getDistinctId;
+- (void)setDistinctId:(NSString *)distinctId;
 - (NSString *)resetDistinctId;
 - (NSString *)getUUIDDeviceId;
 - (NSString *)resetUUIDDeviceId;

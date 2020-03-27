@@ -121,6 +121,8 @@ static GIAP *instance;
         @throw e;
     }
     
+    [self.storage setDistinctId:userId];
+    
     [self addToQueue:@{
         @"type": @"identify",
         @"data": @{
