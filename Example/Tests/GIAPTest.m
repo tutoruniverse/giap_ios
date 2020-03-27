@@ -48,6 +48,9 @@
     id storageMock = [OCMockObject mockForClass:[GIAPStorage class]];
     [[[storageMock stub] andReturn:nil] getTaskQueue];
     [[[storageMock stub] andReturn:@"distinct_id"] getDistinctId];
+    [[[storageMock stub] andDo:^(NSInvocation *invocation) {
+        
+    }] setDistinctId:[OCMArg any]];
     [[[storageMock stub] andReturn:@"device_id"] getUUIDDeviceId];
     [[[storageMock stub] andReturn:storageMock] initWithToken:[OCMArg any]];
     
