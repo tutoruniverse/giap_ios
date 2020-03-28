@@ -121,8 +121,6 @@ static GIAP *instance;
         @throw e;
     }
     
-    [self.storage setDistinctId:userId];
-    
     [self addToQueue:@{
         @"type": @"identify",
         @"data": @{
@@ -432,9 +430,8 @@ static GIAP *instance;
                         [self.delegate giap:self didIdentifyUserId:userId withCurrentDistinctId:self.distinctId withResponse:response andError:error];
                     }
                     
-                    if (error == nil && [response valueForKey:@"distinct_id"] != nil) {
-                        self.distinctId = userId;
-                    }
+                    self.distinctId = userId;
+                    [self.storage setDistinctId:userId];
                     
                     [self handleTaskResult:response error:error];
                 }];
