@@ -20,6 +20,8 @@
 
 @property (atomic, readonly) NSString * _Nonnull deviceId;
 
+@property (atomic) BOOL flushOnBackground;
+
 @property (atomic, weak) id<GIAPDelegate> _Nullable delegate;
 
 #pragma mark Methods

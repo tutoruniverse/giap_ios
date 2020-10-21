@@ -52,6 +52,8 @@ static GIAP *instance;
     // Identity
     self.distinctId = [self.storage getDistinctId];
     self.deviceId = [self getDeviceId];
+    self.flushOnBackground = FLUSH_ON_BACKGROUND;
+    
     
     // Task queue
     NSArray *archivedTaskQueue = [self.storage getTaskQueue];
@@ -541,7 +543,7 @@ static GIAP *instance;
 {
     [self stopFlushTimer];
     
-    if (FLUSH_ON_BACKGROUND) {
+    if (self.flushOnBackground) {
         [self flushQueue];
     } else {
         dispatch_async(self.serialQueue, ^{

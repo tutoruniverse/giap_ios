@@ -211,7 +211,7 @@
     [self waitForExpectations:[NSArray arrayWithObjects:saveExpectation, nil] timeout:10];
 }
 
--(void)test_applicationGoesToBackground
+-(void)test_noFlushOnBackground_applicationGoesToBackground
 {
     XCTestExpectation *saveExpectation = [[XCTestExpectation alloc] initWithDescription:@"Save"];
     XCTestExpectation *trackExpectation = [[XCTestExpectation alloc] initWithDescription:@"Track"];
@@ -238,6 +238,8 @@
     
     [self initGIAP];
     
+    self.giap.flushOnBackground = NO;
+    
     [self.giap track:@"Visit" properties:@{
         @"economy_group": @1
     }];
@@ -250,6 +252,45 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidBecomeActiveNotification object:nil];
     
     [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, nil] timeout:10];
+}
+
+-(void)test_flushOnBackground_applicationGoesToBackground
+{
+    XCTestExpectation *saveExpectation = [[XCTestExpectation alloc] initWithDescription:@"Save"];
+    XCTestExpectation *trackExpectation = [[XCTestExpectation alloc] initWithDescription:@"Track"];
+    XCTestExpectation *notTrackExpectation = [[XCTestExpectation alloc] initWithDescription:@"Track"];
+    [notTrackExpectation setInverted:YES];
+    
+    id storageMock = [OCMockObject mockForClass:[GIAPStorage class]];
+    [[[storageMock stub] andReturn:nil] getTaskQueue];
+    [[[storageMock stub] andReturn:@"distinct_id"] getDistinctId];
+    [[[storageMock stub] andReturn:@"device_id"] getUUIDDeviceId];
+    [[[storageMock stub] andDo:^(NSInvocation *invocation) {
+        [saveExpectation fulfill];
+    }] saveTaskQueue:[OCMArg any]];
+    [[[storageMock stub] andReturn:storageMock] initWithToken:[OCMArg any]];
+    
+    id networkMock = [OCMockObject mockForClass:[GIAPNetwork class]];
+    [[[networkMock stub] andDo:^(NSInvocation *invocation) {
+        void (^__unsafe_unretained callback)(NSDictionary *response, NSError *error);
+        [invocation getArgument:&callback atIndex:3];
+        callback(@{}, nil);
+        [trackExpectation fulfill];
+    }] emitEvents:[OCMArg any] completionHandler:[OCMArg any]];
+    [[[networkMock stub] andReturn:networkMock] initWithToken:[OCMArg any] serverUrl:[OCMArg any]];
+    
+    [self initGIAP];
+    
+    self.giap.flushOnBackground = YES;
+    
+    [self.giap track:@"Visit" properties:@{
+        @"economy_group": @1
+    }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationWillResignActiveNotification object:nil];
+    
+    sleep(2);
+    [self waitForExpectations:[NSArray arrayWithObjects:trackExpectation, nil] timeout:1];
 }
 
 -(void)testQueueSizeLimit
