@@ -42,6 +42,7 @@
 - (void)removeFromProfileProperty:(nonnull NSString *)propertyName values:(nonnull NSArray *)values;
 
 - (void)reset;
+- (void)flushQueue;
 
 @end
 

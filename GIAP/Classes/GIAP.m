@@ -540,10 +540,15 @@ static GIAP *instance;
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
     [self stopFlushTimer];
-    dispatch_async(self.serialQueue, ^{
+    
+    if (FLUSH_ON_BACKGROUND) {
+        [self flushQueue];
+    } else {
+        dispatch_async(self.serialQueue, ^{
+            [self.storage saveTaskQueue:self.taskQueue];
+        });
         [self.storage saveTaskQueue:self.taskQueue];
-    });
-    [self.storage saveTaskQueue:self.taskQueue];
+    }
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
